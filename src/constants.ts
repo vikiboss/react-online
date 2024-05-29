@@ -1,11 +1,3 @@
-import {
-  JsxEmit,
-  ModuleKind,
-  ModuleResolutionKind,
-  ScriptTarget,
-  type CompilerOptions,
-} from 'typescript'
-
 export const defaultCode = `
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,7 +8,7 @@ function App() {
 }
 
 createRoot(document.getElementById("root")!).render(<App />)
-`
+`.trim()
 
 export const defaultImportMap = {
   react: 'https://esm.sh/react',
@@ -25,7 +17,8 @@ export const defaultImportMap = {
 }
 
 export function getHTML(script: string, importMap: string) {
-  return `<!DOCTYPE html>
+  return `
+<!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="UTF-8" />
@@ -36,5 +29,6 @@ export function getHTML(script: string, importMap: string) {
       <div id="root"></div>
       <script type="module">${script}</script>
     </body>
-  </html>`
+  </html>
+`.trim()
 }
