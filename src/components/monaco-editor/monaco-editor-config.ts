@@ -38,11 +38,15 @@ export const monacoEditorConfig: editor.IEditorOptions & editor.IGlobalEditorOpt
   minimap: {
     enabled: false,
   },
-  // stickyScroll: {
-  //   enabled: true,
-  // },
   readOnlyMessage: {
     value: '当前为只读模式，无法直接修改文件内容',
     isTrusted: true,
   },
+  autoClosingBrackets: 'always',
+  autoClosingComments: 'always',
+  autoIndent: 'advanced',
+  autoClosingDelete: 'always',
+  autoClosingQuotes: 'always',
+  autoDetectHighContrast: true,
+  autoClosingOvertype: 'always',
 } as const
