@@ -10,6 +10,7 @@ import { getIframeContent } from './utils/get-iframe-content'
 export function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
+  const [file, setFile] = useState('app.tsx')
   const [code, setCode] = useState(appCode)
   const [importMap, setImportMap] = useState(JSON.stringify(defaultImportMap, null, 2))
 
@@ -30,32 +31,51 @@ export function App() {
     } catch {}
   }, [code])
 
+  const files = ['app.tsx', 'importmap.json']
+
+  const isImportMap = file === 'importmap.json'
+
   return (
     <div className='size-screen flex flex-col'>
-      <div className='h-12vh w-full flex'>
-        <div className='w-64vw grid place-content-center'>TODO: Operation Bar</div>
-        <textarea
-          className='flex-1'
-          onChange={e => setImportMap(e.target.value)}
-          value={`// Import Map\n${importMap}`}
-        />
+      <div className='h-4vh min-h-32px w-full flex'>
+        <div className='w-64vw flex gap-2 items-center'>
+          {files.map(e => {
+            const isActive = e === file
+
+            return (
+              <div
+                key={e}
+                onClick={() => setFile(e)}
+                className={
+                  'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2 py-1' +
+                  (isActive ? ' bg-zinc-6' : '')
+                }
+              >
+                {e}
+              </div>
+            )
+          })}
+        </div>
       </div>
 
-      <div className='flex h-88vh'>
+      <div className='flex flex-1'>
         <div className='w-64vw h-full'>
           <MonacoEditor
-            langs={['typescript']}
-            defaultLanguage='typescript'
-            language='typescript'
+            langs={['typescript', 'json']}
+            value={isImportMap ? importMap : code}
+            language={isImportMap ? 'json' : 'typescript'}
             defaultPath='index.tsx'
-            editorInitialConfig={{}}
-            value={code}
+            defaultLanguage='typescript'
             onChange={e => {
               // TODO: throttle the code change
-              setCode(e ?? '')
-              setImportMap(
-                JSON.stringify({ ...defaultImportMap, ...getImportMap(e ?? '').imports }, null, 2)
-              )
+              if (isImportMap) {
+                setImportMap(e ?? '')
+              } else {
+                setCode(e ?? '')
+                setImportMap(
+                  JSON.stringify({ ...defaultImportMap, ...getImportMap(e ?? '').imports }, null, 2)
+                )
+              }
             }}
           />
         </div>
