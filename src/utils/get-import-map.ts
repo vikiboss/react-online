@@ -1,6 +1,6 @@
 export function getImportMap(code: string) {
   const importRegex =
-    /import\s+(?:(?:\{.*?\}|\*\s+as\s+\w+|\w+\s+\{.*?\}|\w+\s+)?\s+from\s+)?(?:"([^"]+)"|'([^']+))'/gm
+    /import\s+(?:type\s+)?(?:\{[^}]*\}|[^'"]*)\s+from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g
 
   const importSet = new Set<string>()
 

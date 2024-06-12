@@ -43,19 +43,37 @@ export function MonacoEditor(props: MonacoEditorProps) {
 
       editor.onDidChangeModelContent(() => fetchType(editor.getValue()))
 
+      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        target: monaco.languages.typescript.ScriptTarget.Latest,
+        allowNonTsExtensions: true,
+        moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        module: monaco.languages.typescript.ModuleKind.CommonJS,
+        noEmit: true,
+        esModuleInterop: true,
+        jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+        reactNamespace: 'React',
+        allowJs: true,
+        typeRoots: ['node_modules/@types'],
+      })
+
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: false,
+        noSyntaxValidation: false,
+      })
+
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        '<<react-definition-file>>',
+        `file:///node_modules/@react/types/index.d.ts`
+      )
+
       fetchType(editor.getValue())
 
       const highlighter = await getHighlighter({
         themes: ['one-dark-pro', 'catppuccin-latte', ...themes],
-        langs: ['javascript', 'typescript', 'json', 'ini', ...langs],
+        langs: ['tsx', 'jsx', 'javascript', 'typescript', 'json', ...langs],
       })
 
       shikiToMonaco(highlighter, monaco)
-
-      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-        jsx: monaco.languages.typescript.JsxEmit.Preserve,
-        esModuleInterop: true,
-      })
 
       editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig })
 

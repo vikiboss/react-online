@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { create } from '@shined/reactive'
 import { createRoot } from 'react-dom/client'
 
@@ -6,7 +7,13 @@ const addOne = () => store.mutate.count++
 
 function App() {
   const count = store.useSnapshot(s => s.count)
-  return <button onClick={addOne}>{count}</button>
+  const date = dayjs().format('YYYY/MM/DD HH:mm:ss:SSS')
+
+  return (
+    <button onClick={addOne}>
+      {date} --- {count}
+    </button>
+  )
 }
 
 createRoot(document.getElementById('root')!).render(<App />)

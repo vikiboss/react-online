@@ -19,6 +19,7 @@ export function App() {
       const output = transform(code, {
         transforms: ['typescript', 'jsx'],
         jsxRuntime: 'automatic',
+        production: true,
       })
 
       if (iframeRef.current) {
@@ -31,56 +32,66 @@ export function App() {
     } catch {}
   }, [code])
 
-  const files = ['app.tsx', 'importmap.json']
+  const files = ['app.tsx']
 
   const isImportMap = file === 'importmap.json'
 
   return (
-    <div className='size-screen flex flex-col'>
-      <div className='h-4vh min-h-32px w-full flex'>
-        <div className='w-64vw flex gap-2 items-center'>
-          {files.map(e => {
-            const isActive = e === file
+    <div className='size-screen flex'>
+      <div className='flex flex-col h-full border-0 border-r border-solid border-gray/32'>
+        <div className='h-4vh w-64vw min-h-32px flex justify-between'>
+          <div className='flex items-center'>
+            {files.map(e => {
+              const isActive = e === file
 
-            return (
-              <div
-                key={e}
-                onClick={() => setFile(e)}
-                className={
-                  'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2 py-1' +
-                  (isActive ? ' bg-zinc-6' : '')
+              return (
+                <div
+                  key={e}
+                  onClick={() => setFile(e)}
+                  className={
+                    'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2 py-1' +
+                    (isActive ? ' bg-zinc-6/80' : '')
+                  }
+                >
+                  {e}
+                </div>
+              )
+            })}
+          </div>
+          <div
+            onClick={() => setFile('importmap.json')}
+            className={
+              'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2' +
+              (isImportMap ? ' bg-zinc-6/80' : '')
+            }
+          >
+            importmap.json
+          </div>
+        </div>
+
+        <div className='flex flex-1'>
+          <div className='w-64vw h-full'>
+            <MonacoEditor
+              langs={['typescript', 'json']}
+              value={isImportMap ? importMap : code}
+              language={isImportMap ? 'json' : 'typescript'}
+              defaultPath='index.tsx'
+              defaultLanguage='typescript'
+              onChange={e => {
+                // TODO: throttle the code change
+                if (isImportMap) {
+                  setImportMap(e ?? '')
+                } else {
+                  setCode(e ?? '')
+                  const res = { ...defaultImportMap, ...getImportMap(e ?? '').imports }
+                  setImportMap(JSON.stringify(res, null, 2))
                 }
-              >
-                {e}
-              </div>
-            )
-          })}
+              }}
+            />
+          </div>
         </div>
       </div>
-
-      <div className='flex flex-1'>
-        <div className='w-64vw h-full'>
-          <MonacoEditor
-            langs={['typescript', 'json']}
-            value={isImportMap ? importMap : code}
-            language={isImportMap ? 'json' : 'typescript'}
-            defaultPath='index.tsx'
-            defaultLanguage='typescript'
-            onChange={e => {
-              // TODO: throttle the code change
-              if (isImportMap) {
-                setImportMap(e ?? '')
-              } else {
-                setCode(e ?? '')
-                setImportMap(
-                  JSON.stringify({ ...defaultImportMap, ...getImportMap(e ?? '').imports }, null, 2)
-                )
-              }
-            }}
-          />
-        </div>
-        <iframe className='flex-1 border-1 border-solid border-gray/20' ref={iframeRef} />
-      </div>
+      <iframe className='flex-1 border-0 p-2' ref={iframeRef} />
     </div>
   )
 }
