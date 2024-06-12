@@ -1,10 +1,10 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { App } from './app.tsx'
-
-import 'virtual:uno.css'
 import '@unocss/reset/normalize.css'
+import 'virtual:uno.css'
+
+import { App } from './app.tsx'
 
 const mainDiv = document.getElementById('main')
 

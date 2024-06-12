@@ -22,8 +22,8 @@ export function getImportMap(code: string) {
   }
 
   // 使用 esm.sh CDN 为每个识别到的包生成 import map
-  const importMap = {
-    imports: {} as Record<string, string>,
+  const importMap: { imports: Record<string, string> } = {
+    imports: {},
   }
 
   importSet.forEach(pkg => {

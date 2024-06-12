@@ -1,5 +1,5 @@
 import { Editor } from '@monaco-editor/react'
-import { setupAta } from './ata'
+import { setupAta } from './automatic-type-acquisition'
 import { shikiToMonaco } from '@shikijs/monaco'
 import { getHighlighter } from 'shiki'
 import { monacoEditorConfig } from './monaco-editor-config'

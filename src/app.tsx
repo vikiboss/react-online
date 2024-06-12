@@ -1,13 +1,16 @@
 import { transform } from 'sucrase'
 import { useState, useEffect, useRef } from 'react'
-import { defaultCode, defaultImportMap, getHTML } from './constants'
+
+import appCode from './templates/app?raw'
 import { MonacoEditor } from './components/monaco-editor'
-import { getImportMap } from './get-import-map'
+import { getImportMap } from './utils/get-import-map'
+import { defaultImportMap } from './utils/constants'
+import { getIframeContent } from './utils/get-iframe-content'
 
 export function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  const [code, setCode] = useState(defaultCode)
+  const [code, setCode] = useState(appCode)
   const [importMap, setImportMap] = useState(JSON.stringify(defaultImportMap, null, 2))
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export function App() {
 
       if (iframeRef.current) {
         const url = URL.createObjectURL(
-          new Blob([getHTML(output.code, importMap)], { type: 'text/html' })
+          new Blob([getIframeContent(output.code, importMap)], { type: 'text/html' })
         )
 
         iframeRef.current.src = url
