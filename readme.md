@@ -1,10 +1,11 @@
-# React + TS + Vite + UnoCS
+# React Online Playground
 
-A web project template generate by [templates](https://github.com/vikiboss/templates).
+## Features
 
-## Tech Stack
+- Support most of third-party libraries
+- Automatically add imports in `importmap.json`
+- Beautiful monaco editor and clean UI
+- Instantly see the result of your code
 
-- [x] [React](https://reactjs.org/)
-- [x] [TypeScript](https://www.typescriptlang.org/)
-- [x] [UnoCSS](https://unocss.dev/)
-- [x] [Vite](https://vitejs.dev/)
+// TODO
+

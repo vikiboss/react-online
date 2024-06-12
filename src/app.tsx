@@ -32,43 +32,39 @@ export function App() {
     } catch {}
   }, [code])
 
-  const files = ['app.tsx']
+  const files = ['app.tsx', 'importmap.json']
 
   const isImportMap = file === 'importmap.json'
 
   return (
-    <div className='size-screen flex'>
-      <div className='flex flex-col h-full border-0 border-r border-solid border-gray/32'>
-        <div className='h-4vh w-64vw min-h-32px flex justify-between'>
-          <div className='flex items-center'>
-            {files.map(e => {
-              const isActive = e === file
+    <div className='size-screen flex flex-col font-sans'>
+      <div className='h-4vh w-full min-h-32px flex justify-between border-0 border-b border-solid border-gray/24'>
+        <div className='flex items-center'>
+          {files.map(e => {
+            const isActive = e === file
 
-              return (
-                <div
-                  key={e}
-                  onClick={() => setFile(e)}
-                  className={
-                    'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2 py-1' +
-                    (isActive ? ' bg-zinc-6/80' : '')
-                  }
-                >
-                  {e}
-                </div>
-              )
-            })}
-          </div>
-          <div
-            onClick={() => setFile('importmap.json')}
-            className={
-              'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2' +
-              (isImportMap ? ' bg-zinc-6/80' : '')
-            }
-          >
-            importmap.json
-          </div>
+            return (
+              <div
+                key={e}
+                onClick={() => setFile(e)}
+                className={
+                  'cursor-pointer hover:opacity-92 h-full font-mono flex items-center px-2 py-1' +
+                  (isActive ? ' bg-zinc-6/80' : '')
+                }
+              >
+                {e}
+              </div>
+            )
+          })}
         </div>
+        <div className='flex items-center'>
+          <a className='px-2' href='https://github.com/vikiboss/react-online'>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
 
+      <div className='flex h-full border-0 border-r border-solid border-gray/32'>
         <div className='flex flex-1'>
           <div className='w-64vw h-full'>
             <MonacoEditor
@@ -90,8 +86,8 @@ export function App() {
             />
           </div>
         </div>
+        <iframe className='flex-1 border-0 p-2' ref={iframeRef} />
       </div>
-      <iframe className='flex-1 border-0 p-2' ref={iframeRef} />
     </div>
   )
 }
