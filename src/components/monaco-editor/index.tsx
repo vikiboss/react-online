@@ -32,6 +32,15 @@ export function MonacoEditor(props: MonacoEditorProps) {
         monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
       })
 
+      // disable TS semantic and syntax validation
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+      })
+
+      // disable CSS validation
+      monaco.languages.css.cssDefaults.setOptions({ validate: false })
+
       editor.onDidChangeModelContent(() => fetchType(editor.getValue()))
 
       fetchType(editor.getValue())

@@ -51,6 +51,7 @@ export function App() {
             editorInitialConfig={{}}
             value={code}
             onChange={e => {
+              // TODO: throttle the code change
               setCode(e ?? '')
               setImportMap(
                 JSON.stringify({ ...defaultImportMap, ...getImportMap(e ?? '').imports }, null, 2)

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import { createRoot } from 'react-dom/client'
 
 import '@unocss/reset/normalize.css'
@@ -14,6 +15,7 @@ if (mainDiv) {
   root.render(
     <React.StrictMode>
       <App />
+      <Toaster />
     </React.StrictMode>
   )
 } else {
