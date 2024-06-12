@@ -28,17 +28,25 @@ export function App() {
   }, [code])
 
   return (
-    <div className='h-screen w-screen grid place-content-center gap-2'>
-      <div className='flex gap-2'>
-        <div className='w-800px h-320px'>
+    <div className='size-screen flex flex-col'>
+      <div className='h-12vh w-full flex'>
+        <div className='w-64vw grid place-content-center'>TODO: Operation Bar</div>
+        <textarea
+          className='flex-1'
+          onChange={e => setImportMap(e.target.value)}
+          value={`// Import Map\n${importMap}`}
+        />
+      </div>
+
+      <div className='flex h-88vh'>
+        <div className='w-64vw h-full'>
           <MonacoEditor
-            className='border border-gray border-solid rounded overflow-hidden'
             langs={['typescript']}
-            language='typescript'
-            value={code}
             defaultLanguage='typescript'
+            language='typescript'
             defaultPath='index.tsx'
             editorInitialConfig={{}}
+            value={code}
             onChange={e => {
               setCode(e ?? '')
               setImportMap(
@@ -47,13 +55,8 @@ export function App() {
             }}
           />
         </div>
-        <iframe className='border-gray rounded border-1 border-solid' ref={iframeRef} />
+        <iframe className='flex-1 border-1 border-solid border-gray/20' ref={iframeRef} />
       </div>
-      <textarea
-        className='w-800px h-200px'
-        onChange={e => setImportMap(e.target.value)}
-        value={importMap}
-      />
     </div>
   )
 }

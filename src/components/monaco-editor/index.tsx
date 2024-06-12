@@ -37,7 +37,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
       fetchType(editor.getValue())
 
       const highlighter = await getHighlighter({
-        themes: ['catppuccin-latte', 'one-dark-pro', ...themes],
+        themes: ['one-dark-pro', 'catppuccin-latte', ...themes],
         langs: ['javascript', 'typescript', 'json', 'ini', ...langs],
       })
 

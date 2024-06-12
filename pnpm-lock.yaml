@@ -18,6 +18,9 @@ dependencies:
   '@typescript/ata':
     specifier: ^0.9.4
     version: 0.9.4(typescript@5.4.5)
+  '@unocss/reset':
+    specifier: ^0.61.0
+    version: 0.61.0
   monaco-editor:
     specifier: ^0.49.0
     version: 0.49.0
@@ -1109,6 +1112,10 @@ packages:
   /@unocss/reset@0.60.3:
     resolution: {integrity: sha512-EuC8gkh8L8WvPOcjS/KqprEJXIKcpBPm+ou5G9D6WgDmJ+TgQrri5oR+QUmOmEnueQkVL7bnkFkIKeg71SJLFA==}
     dev: true
+
+  /@unocss/reset@0.61.0:
+    resolution: {integrity: sha512-VqemtmzH8Rgu5yNomtv50gIcy4KZ2x1aP+7WZCds9x5ZdTSEjbfCOgUDI9rDrrGSipJkCmJ1yOhUPMC7ND6Hfw==}
+    dev: false
 
   /@unocss/rule-utils@0.60.3:
     resolution: {integrity: sha512-I47/DcKQ2z12W80+Ffth0K6LzNvqcQPYRWk7KwVemVoEiGYamMV8/s+SbB26Fk9KUFjh+Ns/pGAo4iJZo0ueUQ==}

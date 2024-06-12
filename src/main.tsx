@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { App } from './app.tsx'
 
 import 'virtual:uno.css'
+import '@unocss/reset/normalize.css'
 
 const mainDiv = document.getElementById('main')
 
