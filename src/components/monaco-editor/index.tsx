@@ -1,101 +1,95 @@
-import { Editor } from "@monaco-editor/react";
-import { shikiToMonaco } from "@shikijs/monaco";
-import { getHighlighter } from "shiki";
-import { setupAta } from "./automatic-type-acquisition";
-import { monacoEditorConfig } from "./monaco-editor-config";
+import { useEffect, useRef } from 'react'
+import { Editor } from '@monaco-editor/react'
+import { shikiToMonaco } from '@shikijs/monaco'
+import { getHighlighter } from 'shiki'
+import { setupAta } from './automatic-type-acquisition'
+import { monacoEditorConfig } from './monaco-editor-config'
 
-import type { EditorProps } from "@monaco-editor/react";
-import type { editor } from "monaco-editor";
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import type { BundledLanguage, BundledTheme } from "shiki";
+import type { EditorProps } from '@monaco-editor/react'
+import type { editor } from 'monaco-editor'
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
+import type { BundledLanguage, BundledTheme } from 'shiki'
 
 export interface MonacoEditorProps extends EditorProps {
-	editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions;
-	onAtaStatusChange?: (status: boolean) => void;
-	themes?: BundledTheme[];
-	langs?: BundledLanguage[];
+  editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions
+  onAtaStatusChange?: (status: boolean) => void
+  themes?: BundledTheme[]
+  langs?: BundledLanguage[]
 }
 
-export type MonacoEditor = editor.IStandaloneCodeEditor;
-export type Monaco = typeof monaco;
+export type MonacoEditor = editor.IStandaloneCodeEditor
+export type Monaco = typeof monaco
 
 export function MonacoEditor(props: MonacoEditorProps) {
-	const {
-		onMount,
-		themes = [],
-		langs = [],
-		editorInitialConfig,
-		onAtaStatusChange = () => {},
-		...rest
-	} = props;
+  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaStatusChange = () => {}, ...rest } = props
 
-	const defaultProps = {
-		width: "100%",
-		height: "100%",
-		defaultLanguage: "javascript",
-		defaultPath: "index.js",
-		defaultValue: 'console.log("hello world!")',
-		async onMount(editor: MonacoEditor, monaco: Monaco) {
-			const fetchType = setupAta(
-				(code, path) => {
-					monaco.languages.typescript.typescriptDefaults.addExtraLib(
-						code,
-						`file://${path}`,
-					);
-				},
-				() => onAtaStatusChange(true),
-				() => onAtaStatusChange(false),
-			);
+  const ref = useRef<MonacoEditor>(null)
 
-			// disable TS semantic and syntax validation
-			monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-				noSemanticValidation: true,
-				noSyntaxValidation: true,
-			});
+  const defaultProps = {
+    width: '100%',
+    height: '100%',
+    defaultLanguage: 'typescript',
+    defaultPath: 'index.ts',
+    defaultValue: 'console.log("hello world!")',
+    async onMount(editor: MonacoEditor, monaco: Monaco) {
+      ref.current = editor
 
-			// disable CSS validation
-			monaco.languages.css.cssDefaults.setOptions({ validate: false });
+      const fetchType = setupAta(
+        (code, path) => {
+          monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
+        },
+        () => onAtaStatusChange(true),
+        () => onAtaStatusChange(false),
+      )
 
-			editor.onDidChangeModelContent(() => fetchType(editor.getValue()));
+      // disable TS semantic and syntax validation
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+      })
 
-			monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-				target: monaco.languages.typescript.ScriptTarget.Latest,
-				allowNonTsExtensions: true,
-				moduleResolution:
-					monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-				module: monaco.languages.typescript.ModuleKind.CommonJS,
-				noEmit: true,
-				esModuleInterop: true,
-				jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-				reactNamespace: "React",
-				allowJs: true,
-				typeRoots: ["node_modules/@types"],
-			});
+      // disable CSS validation
+      monaco.languages.css.cssDefaults.setOptions({ validate: false })
 
-			monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-				noSemanticValidation: false,
-				noSyntaxValidation: false,
-			});
+      editor.onDidChangeModelContent(() => fetchType(editor.getValue()))
 
-			monaco.languages.typescript.typescriptDefaults.addExtraLib(
-				"<<react-definition-file>>",
-				"file:///node_modules/@react/types/index.d.ts",
-			);
+      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        target: monaco.languages.typescript.ScriptTarget.Latest,
+        allowNonTsExtensions: true,
+        moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        module: monaco.languages.typescript.ModuleKind.CommonJS,
+        noEmit: true,
+        esModuleInterop: true,
+        jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+        reactNamespace: 'React',
+        allowJs: true,
+        typeRoots: ['node_modules/@types'],
+      })
 
-			fetchType(editor.getValue());
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: false,
+        noSyntaxValidation: false,
+      })
 
-			const highlighter = await getHighlighter({
-				themes: ["one-dark-pro", "catppuccin-latte", ...themes],
-				langs: ["tsx", "jsx", "javascript", "typescript", "json", ...langs],
-			});
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        '<<react-definition-file>>',
+        'file:///node_modules/@react/types/index.d.ts',
+      )
 
-			shikiToMonaco(highlighter, monaco);
+      fetchType(editor.getValue())
 
-			editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig });
+      const highlighter = await getHighlighter({
+        themes: ['one-dark-pro', 'catppuccin-latte', ...themes],
+        langs: ['tsx', 'jsx', 'javascript', 'typescript', 'json', ...langs],
+      })
 
-			onMount?.(editor as MonacoEditor, monaco);
-		},
-	};
+      shikiToMonaco(highlighter, monaco)
 
-	return <Editor {...defaultProps} {...rest} />;
+      editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig })
+
+      onMount?.(editor as MonacoEditor, monaco)
+    },
+  }
+
+  return <Editor {...defaultProps} {...rest} />
 }

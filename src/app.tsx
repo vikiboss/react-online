@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { HeaderBar } from './components/header-bar'
 import { MonacoEditor } from './components/monaco-editor'
 import { useIframeUrl } from './hooks/use-iframe-url'
@@ -8,6 +8,7 @@ import { getImportMap } from './utils/get-import-map'
 import { mergeImportMap } from './utils/merge-importmap'
 
 export function App() {
+  const ref = useRef<MonacoEditor>(null)
   const [file, setFile] = useState('app.tsx')
   const [loading, setLoading] = useState(true)
   const [code, setCode] = useState(appCode)
@@ -18,6 +19,14 @@ export function App() {
   const files = ['app.tsx', 'Import Map']
   const isImportMap = file === 'Import Map'
 
+  // FIXME: use `useDark` to apply automatic detected change
+  const isDark = !!window.matchMedia('(prefers-color-scheme: dark)').matches
+
+  useEffect(() => {
+    const theme = isDark ? 'one-dark-pro' : 'catppuccin-latte'
+    ref.current?.updateOptions({ theme })
+  }, [isDark])
+
   return (
     <div className="size-screen flex flex-col font-sans">
       <HeaderBar files={files} onSelect={setFile} selected={file} loading={loading} />
@@ -27,9 +36,15 @@ export function App() {
             <MonacoEditor
               langs={['typescript', 'json']}
               path={file}
+              theme={isDark ? 'one-dark-pro' : 'catppuccin-latte'}
               onAtaStatusChange={setLoading}
               value={isImportMap ? importMap : code}
               defaultLanguage={isImportMap ? 'json' : 'typescript'}
+              onMount={(e) => {
+                ref.current = e
+                const theme = isDark ? 'one-dark-pro' : 'catppuccin-latte'
+                e.updateOptions({ theme })
+              }}
               onChange={(e) => {
                 // TODO: throttle the code change
                 if (isImportMap) {

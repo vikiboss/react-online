@@ -29,7 +29,6 @@ export const monacoEditorConfig: editor.IEditorOptions & editor.IGlobalEditorOpt
   cursorSmoothCaretAnimation: 'explicit',
   cursorBlinking: 'smooth',
   contextmenu: false,
-  theme: 'one-dark-pro',
   wordWrap: 'on',
   smoothScrolling: true,
   stickyTabStops: true,

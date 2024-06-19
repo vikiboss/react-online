@@ -23,7 +23,9 @@ export function HeaderBar(props: Props) {
               onClick={() => onSelect(e)}
               className={cn(
                 'cursor-pointer h-full hover:opacity-92 font-mono flex items-center px-4',
-                isActive ? ' bg-zinc-6/80 border-0 border-y-2 border-solid border-b-gray border-t-transparent' : '',
+                isActive
+                  ? ' dark:bg-zinc-6/80 bg-zinc-6/20 border-0 border-y-2 border-solid border-b-gray border-t-transparent'
+                  : '',
               )}
             >
               {e}
