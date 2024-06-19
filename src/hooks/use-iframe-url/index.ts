@@ -43,5 +43,5 @@ export function useIframeUrl(code = '', importMap = '') {
 }
 
 export function getIframeContent(script: string, importMap: string) {
-  return iframe.replace('/** IMPORT_MAP */', importMap).replace('/** SCRIPT */', script)
+  return iframe.replace('<!-- IMPORT_MAP -->', importMap).replace('/** SCRIPT */', script)
 }
