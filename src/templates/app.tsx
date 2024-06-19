@@ -1,5 +1,5 @@
-import dayjs from 'dayjs'
 import { create } from '@shined/reactive'
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 
@@ -8,7 +8,7 @@ const addOne = () => store.mutate.count++
 const updateTime = () => (store.mutate.time = Date.now())
 
 function App() {
-  const [count, time] = store.useSnapshot(s => [s.count, s.time])
+  const [count, time] = store.useSnapshot((s) => [s.count, s.time])
 
   useEffect(() => {
     const timer = setInterval(updateTime, 1000)

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Toaster } from 'react-hot-toast'
 import { createRoot } from 'react-dom/client'
+import { Toaster } from 'react-hot-toast'
 
 import '@unocss/reset/normalize.css'
 import 'virtual:uno.css'
@@ -16,7 +16,7 @@ if (mainDiv) {
     <React.StrictMode>
       <App />
       <Toaster />
-    </React.StrictMode>
+    </React.StrictMode>,
   )
 } else {
   console.error('mainDiv is null')

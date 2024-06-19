@@ -1,5 +1,7 @@
 # React Online Playground
 
+WIP.
+
 ## Features
 
 - Support most of third-party libraries
@@ -7,5 +9,6 @@
 - Beautiful monaco editor and clean UI
 - Instantly see the result of your code
 
-// TODO
+## License
 
+MIT © Viki
