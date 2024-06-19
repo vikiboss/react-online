@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Editor } from '@monaco-editor/react'
 import { shikiToMonaco } from '@shikijs/monaco'
 import { getHighlighter } from 'shiki'
