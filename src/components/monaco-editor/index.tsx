@@ -1,6 +1,6 @@
-import { useRef } from 'react'
 import { Editor } from '@monaco-editor/react'
 import { shikiToMonaco } from '@shikijs/monaco'
+import { useRef } from 'react'
 import { getHighlighter } from 'shiki'
 import { setupAta } from './automatic-type-acquisition'
 import { monacoEditorConfig } from './monaco-editor-config'
