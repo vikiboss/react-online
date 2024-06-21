@@ -1,4 +1,5 @@
 import { create } from '@shined/reactive'
+import { useMouse } from '@shined/react-use'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -8,7 +9,8 @@ const addOne = () => store.mutate.count++
 const updateTime = () => (store.mutate.time = Date.now())
 
 function App() {
-  const [count, time] = store.useSnapshot((s) => [s.count, s.time])
+  const { x, y } = useMouse()
+  const [count, time] = store.useSnapshot(s => [s.count, s.time])
 
   useEffect(() => {
     const timer = setInterval(updateTime, 1000)
@@ -19,7 +21,7 @@ function App() {
 
   return (
     <div>
-      <div>Time: {formatted}</div>
+      <div>x: {x}, y: {y}, Time: {formatted}</div>
       <button onClick={addOne}>Count: {count}</button>
     </div>
   )
