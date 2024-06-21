@@ -1,8 +1,8 @@
 import iframe from '@/templates/iframe.html?raw'
-import { useMemo } from 'react'
+import { useMemo, type DependencyList } from 'react'
 import { transform } from 'sucrase'
 
-export function useIframeUrl(code = '', importMap = '') {
+export function useIframeUrl(code = '', importMap = '', deps: DependencyList = []) {
   return useMemo(() => {
     let html = ''
 
@@ -39,7 +39,7 @@ export function useIframeUrl(code = '', importMap = '') {
     }
 
     return URL.createObjectURL(new Blob([html], { type: 'text/html' }))
-  }, [code, importMap])
+  }, [code, importMap, ...deps])
 }
 
 export function getIframeContent(script: string, importMap: string) {
