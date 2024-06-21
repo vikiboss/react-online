@@ -4,10 +4,11 @@ WIP.
 
 ## Features
 
-- Support most of third-party libraries
-- Automatically add imports in `importmap.json`
-- Beautiful monaco editor and clean UI
-- Instantly see the result of your code
+- Support shared url (base64 encoded in hash)
+- Support many third-party libraries (`dayjs`, `@shined/react-use`)
+- Automatically add imports in `Import Map`
+- Dark mode and beautiful monaco editor and clean UI
+- Instantly result of your code
 
 ## License
 
