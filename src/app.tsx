@@ -23,7 +23,7 @@ export function App() {
   useMount(() => {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
     if (initialCode) {
-      setCode(initialCode)
+      setCode(window.atob(initialCode))
     }
   })
 
@@ -41,7 +41,7 @@ export function App() {
       if (isImportMap) {
         setImportMap(e ?? '')
       } else {
-        setSp({ code: e || undefined })
+        setSp({ code: e ? window.btoa(e) : undefined })
         setCode(e ?? '')
         const res = mergeImportMap(defaultImportMap, getImportMap(code))
         setImportMap(JSON.stringify(res, null, 2))
