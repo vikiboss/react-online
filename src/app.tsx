@@ -6,7 +6,7 @@ import appCode from './templates/app?raw'
 import { defaultImportMap } from './utils/constants'
 import { getImportMap } from './utils/get-import-map'
 import { mergeImportMap } from './utils/merge-importmap'
-import { useDebouncedFn, useMediaQuery, useMount, useUrlSearchParams } from '@shined/react-use'
+import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
 
 export function App() {
   const ref = useRef<MonacoEditor>(null)
@@ -27,11 +27,14 @@ export function App() {
     }
   })
 
-  useEffect(() => {
+  const updateTheme = useStableFn(() => {
     if (!ref.current) return
     const theme = isDark ? 'one-dark-pro' : 'catppuccin-latte'
     ref.current.updateOptions({ theme })
-  }, [isDark])
+  })
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => void updateTheme(), [isDark])
 
   const debouncedHandleChange = useDebouncedFn(
     (e?: string) => {
@@ -56,12 +59,13 @@ export function App() {
             <MonacoEditor
               langs={['typescript', 'json']}
               path={file}
-              theme={isDark ? 'one-dark-pro' : 'catppuccin-latte'}
               onAtaStatusChange={setLoading}
               value={isImportMap ? importMap : code}
               defaultLanguage={isImportMap ? 'json' : 'typescript'}
-              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-              onMount={(e) => void (ref.current = e)}
+              onMount={(e) => {
+                ref.current = e
+                updateTheme()
+              }}
               onChange={debouncedHandleChange}
             />
           </div>
