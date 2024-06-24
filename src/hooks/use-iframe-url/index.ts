@@ -1,5 +1,5 @@
 import iframe from '@/templates/iframe.html?raw'
-import { useMemo, type DependencyList } from 'react'
+import { type DependencyList, useMemo } from 'react'
 import { transform } from 'sucrase'
 
 export function useIframeUrl(code = '', importMap = '', deps: DependencyList = []) {

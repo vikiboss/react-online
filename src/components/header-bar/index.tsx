@@ -1,6 +1,6 @@
-import useSWR from 'swr'
-import { useClipboard } from '@shined/react-use'
 import { cn } from '@/utils/class-names'
+import { useClipboard } from '@shined/react-use'
+import useSWR from 'swr'
 
 interface Props {
   files?: string[]

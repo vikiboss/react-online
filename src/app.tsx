@@ -1,3 +1,4 @@
+import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
 import { useEffect, useRef, useState } from 'react'
 import { HeaderBar } from './components/header-bar'
 import { MonacoEditor } from './components/monaco-editor'
@@ -6,7 +7,6 @@ import appCode from './templates/app?raw'
 import { defaultImportMap } from './utils/constants'
 import { getImportMap } from './utils/get-import-map'
 import { mergeImportMap } from './utils/merge-importmap'
-import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
 
 export function App() {
   const ref = useRef<MonacoEditor>(null)
