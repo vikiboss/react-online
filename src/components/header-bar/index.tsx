@@ -9,7 +9,7 @@ interface Props {
   loading?: boolean
 }
 
-const repoApi = 'https://api.github.com/repos/vikiboss/react-online'
+const repoApi = 'https://ungh.cc/repos/vikiboss/react-online'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export function HeaderBar(props: Props) {
