@@ -1,3 +1,5 @@
+import useSWR from 'swr'
+import { useClipboard } from '@shined/react-use'
 import { cn } from '@/utils/class-names'
 
 interface Props {
@@ -7,8 +9,13 @@ interface Props {
   loading?: boolean
 }
 
+const repoApi = 'https://api.github.com/repos/vikiboss/react-online'
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
 export function HeaderBar(props: Props) {
   const { loading, files = [], selected = '', onSelect = () => {} } = props
+  const clipboard = useClipboard()
+  const { data } = useSWR(repoApi, fetcher)
 
   return (
     <div className="h-4vh w-full min-h-36px flex justify-between border-0 border-b border-solid border-gray/24">
@@ -34,9 +41,12 @@ export function HeaderBar(props: Props) {
         })}
         {loading && <div className="bg-gray/12 h-full flex items-center px-4">Loading dts files...</div>}
       </div>
-      <div className="flex items-center">
-        <a className="px-2" href="https://github.com/vikiboss/react-online">
-          Star on GitHub
+      <div className="flex items-center gap-2 mr-2">
+        <button type="button" onClick={() => clipboard.copy(location.href)}>
+          {clipboard.copied ? 'Copied' : 'Copy Sharable URL'}
+        </button>
+        <a href="https://github.com/vikiboss/react-online">
+          Star on GitHub ({Number(data?.stargazers_count ?? '').toLocaleString()}+)
         </a>
       </div>
     </div>

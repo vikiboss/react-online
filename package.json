@@ -25,7 +25,8 @@
 		"react-dom": "19.0.0-rc-6f23540c7d-20240528",
 		"react-hot-toast": "^2.4.1",
 		"shiki": "^1.6.1",
-		"sucrase": "^3.35.0"
+		"sucrase": "^3.35.0",
+		"swr": "^2.2.5"
 	},
 	"pnpm": {
 		"overrides": {
