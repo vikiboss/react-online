@@ -29,17 +29,17 @@ export function HeaderBar(props: Props) {
               onKeyDown={() => onSelect(e)}
               onClick={() => onSelect(e)}
               className={cn(
-                'cursor-pointer h-full hover:opacity-92 font-mono flex items-center px-4',
+                'cursor-pointer h-full hover:bg-zinc-6/40 hover:dark:bg-zinc-6/72 flex items-center px-4',
                 isActive
-                  ? ' dark:bg-zinc-6/80 bg-zinc-6/20 border-0 border-y-2 border-solid border-b-gray border-t-transparent'
-                  : '',
+                  ? ' dark:bg-zinc-6/80 bg-zinc-6/32 border-0 border-y-2 border-solid border-b-gray border-t-transparent'
+                  : 'dark:bg-zinc-6/92 bg-zinc-6/20',
               )}
             >
               {e}
             </div>
           )
         })}
-        {loading && <div className="bg-gray/12 h-full flex items-center px-4">Loading dts files...</div>}
+        {loading && <div className="h-full flex items-center px-4">Loading dts files...</div>}
       </div>
       <div className="flex items-center gap-2 mr-2">
         <button type="button" onClick={() => clipboard.copy(location.href)}>
