@@ -46,7 +46,7 @@ export function HeaderBar(props: Props) {
           {clipboard.copied ? 'Copied' : 'Copy Sharable URL'}
         </button>
         <a href="https://github.com/vikiboss/react-online">
-          Star on GitHub ({Number(data?.stargazers_count ?? '').toLocaleString()}+)
+          Star on GitHub ({Number(data?.repo?.stars ?? '').toLocaleString()}+)
         </a>
       </div>
     </div>
