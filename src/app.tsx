@@ -43,7 +43,7 @@ export function App() {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
 
     if (initialCode) {
-      const code = decodeURIComponent(window.atob(initialCode))
+      const code = window.atob(decodeURIComponent(initialCode))
       globalStore.mutate.codeMap[EntryFileName] = code
     }
   })
