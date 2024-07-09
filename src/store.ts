@@ -19,6 +19,7 @@ export const defaultImportMap: ImportMap = {
 export const globalStore = create({
   useWaterCSS: true,
   useAutoImportMap: true,
+  isEditorReady: false,
   html: iframeHtml,
   loadingTypes: false,
   importMap: defaultImportMap,

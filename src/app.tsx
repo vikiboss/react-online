@@ -11,16 +11,19 @@ import { HeaderBar } from './components/header-bar'
 import { MonacoEditor } from './components/monaco-editor'
 import { useIframeUrl } from './hooks/use-iframe-url'
 import { defaultImportMap, EntryFileName, getImportMap, globalStore, ImportMapName, mergeImportMap } from './store'
+import { cn } from './utils/class-names'
 
 export function App() {
-  const [file, codeMap, loadingTypes, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot((s) => [
-    s.currentFile,
-    s.codeMap,
-    s.loadingTypes,
-    s.importMap,
-    s.useAutoImportMap,
-    s.useWaterCSS,
-  ])
+  const [file, isEditorReady, codeMap, loadingTypes, importMap, useAutoImportMap, useWaterCSS] =
+    globalStore.useSnapshot((s) => [
+      s.currentFile,
+      s.isEditorReady,
+      s.codeMap,
+      s.loadingTypes,
+      s.importMap,
+      s.useAutoImportMap,
+      s.useWaterCSS,
+    ])
 
   const [isImportMap, isEntry, isAutoImportMap] = [
     file === ImportMapName,
@@ -90,7 +93,17 @@ export function App() {
       />
       <div className="flex h-full border-0 border-r border-solid border-gray/32">
         <div className="flex flex-1">
-          <div className="w-64vw h-full">
+          <div className="w-64vw h-full relative">
+            <div
+              className={cn(
+                'absolute grid place-content-center size-full transition-all',
+                isDark ? 'text-white bg-black/80' : 'text-dark bg-white/80',
+                isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999] opacity-80',
+              )}
+            >
+              Seting up Monaco Editor...
+            </div>
+
             <MonacoEditor
               langs={['typescript', 'json']}
               path={isAutoImportMap ? 'Auto Import Map' : file}
@@ -99,6 +112,12 @@ export function App() {
               onChange={debouncedHandleChange}
               onAtaStatusChange={(status) => {
                 globalStore.mutate.loadingTypes = status
+
+                if (status) {
+                  setTimeout(() => {
+                    globalStore.mutate.isEditorReady = true
+                  }, 1200)
+                }
               }}
               onMount={(e) => {
                 ref.current = e
