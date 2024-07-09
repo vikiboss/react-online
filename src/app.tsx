@@ -1,29 +1,51 @@
-import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useDebouncedFn,
+  useMediaQuery,
+  useMount,
+  useStableFn,
+  useUpdateEffect,
+  useUrlSearchParams,
+} from '@shined/react-use'
+import { useEffect, useRef } from 'react'
 import { HeaderBar } from './components/header-bar'
 import { MonacoEditor } from './components/monaco-editor'
 import { useIframeUrl } from './hooks/use-iframe-url'
-import appCode from './templates/app?raw'
-import { defaultImportMap } from './utils/constants'
-import { getImportMap } from './utils/get-import-map'
-import { mergeImportMap } from './utils/merge-importmap'
+import { defaultImportMap, EntryFileName, getImportMap, globalStore, ImportMapName, mergeImportMap } from './store'
 
 export function App() {
+  const [file, codeMap, loadingTypes, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot((s) => [
+    s.currentFile,
+    s.codeMap,
+    s.loadingTypes,
+    s.importMap,
+    s.useAutoImportMap,
+    s.useWaterCSS,
+  ])
+
+  const [isImportMap, isEntry, isAutoImportMap] = [
+    file === ImportMapName,
+    file === EntryFileName,
+    file === ImportMapName && useAutoImportMap,
+  ]
+
   const ref = useRef<MonacoEditor>(null)
-  const [file, setFile] = useState('app.tsx')
-  const [loading, setLoading] = useState(true)
-  const [code, setCode] = useState(appCode)
-  const [importMap, setImportMap] = useState(JSON.stringify(defaultImportMap, null, 2))
   const [_sp, setSp] = useUrlSearchParams('hash-params')
-  const url = useIframeUrl(code, importMap)
+
+  const url = useIframeUrl(
+    codeMap[EntryFileName],
+    useAutoImportMap ? JSON.stringify(importMap, null, 2) : codeMap[ImportMapName],
+    [useAutoImportMap, useWaterCSS],
+  )
+
   const isDark = useMediaQuery('(prefers-color-scheme: dark)')
-  const files = ['app.tsx', 'Import Map']
-  const isImportMap = file === 'Import Map'
 
   useMount(() => {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
+
     if (initialCode) {
-      setCode(window.atob(initialCode))
+      const code = window.atob(initialCode)
+      globalStore.mutate.codeMap[EntryFileName] = code
+      debouncedHandleChange(code)
     }
   })
 
@@ -37,36 +59,57 @@ export function App() {
   useEffect(() => void updateTheme(), [isDark])
 
   const debouncedHandleChange = useDebouncedFn(
-    (e?: string) => {
-      if (isImportMap) {
-        setImportMap(e ?? '')
+    (e = '') => {
+      const file = globalStore.mutate.currentFile
+
+      if (useAutoImportMap) {
+        const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
+        globalStore.mutate.importMap = importMap
       } else {
+        globalStore.mutate.codeMap[file] = e
+      }
+
+      if (isEntry) {
         setSp({ code: e ? window.btoa(e) : undefined })
-        setCode(e ?? '')
-        const res = mergeImportMap(defaultImportMap, getImportMap(code))
-        setImportMap(JSON.stringify(res, null, 2))
       }
     },
     { wait: 500 },
   )
 
+  useUpdateEffect(() => {
+    if (isAutoImportMap) {
+      ref.current?.updateOptions({ readOnly: true })
+    } else {
+      ref.current?.updateOptions({ readOnly: false })
+    }
+  }, [isAutoImportMap])
+
   return (
     <div className="size-screen flex flex-col font-sans">
-      <HeaderBar files={files} onSelect={setFile} selected={file} loading={loading} />
+      <HeaderBar
+        files={[EntryFileName, ImportMapName]}
+        onSelect={(file) => {
+          globalStore.mutate.currentFile = file
+        }}
+        selected={file}
+        loadingTypes={loadingTypes}
+      />
       <div className="flex h-full border-0 border-r border-solid border-gray/32">
         <div className="flex flex-1">
           <div className="w-64vw h-full">
             <MonacoEditor
               langs={['typescript', 'json']}
-              path={file}
-              onAtaStatusChange={setLoading}
-              value={isImportMap ? importMap : code}
-              defaultLanguage={isImportMap ? 'json' : 'typescript'}
+              path={isAutoImportMap ? 'Auto Import Map' : file}
+              language={isImportMap ? 'json' : 'typescript'}
+              value={isAutoImportMap ? JSON.stringify(importMap, null, 2) : codeMap[file]}
+              onChange={debouncedHandleChange}
+              onAtaStatusChange={(status) => {
+                globalStore.mutate.loadingTypes = status
+              }}
               onMount={(e) => {
                 ref.current = e
                 updateTheme()
               }}
-              onChange={debouncedHandleChange}
             />
           </div>
         </div>

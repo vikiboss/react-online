@@ -1,6 +1,8 @@
-import iframe from '@/templates/iframe.html?raw'
-import { type DependencyList, useMemo } from 'react'
 import { transform } from 'sucrase'
+import { useMemo } from 'react'
+import { globalStore } from '@/store'
+
+import type { DependencyList } from 'react'
 
 export function useIframeUrl(code = '', importMap = '', deps: DependencyList = []) {
   return useMemo(() => {
@@ -43,5 +45,14 @@ export function useIframeUrl(code = '', importMap = '', deps: DependencyList = [
 }
 
 export function getIframeContent(script: string, importMap: string) {
-  return iframe.replace('<!-- IMPORT_MAP -->', importMap).replace('/** SCRIPT */', script)
+  const raw = globalStore.mutate.html.replace('<!-- IMPORT_MAP -->', importMap).replace('/** SCRIPT */', script)
+
+  if (globalStore.mutate.useWaterCSS) {
+    return raw
+  }
+
+  return raw
+    .split('\n')
+    .filter((line) => !line.includes('water.css'))
+    .join('\n')
 }

@@ -29,7 +29,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
     width: '100%',
     height: '100%',
     defaultLanguage: 'typescript',
-    defaultPath: 'index.ts',
+    defaultPath: 'index.tsx',
     defaultValue: 'console.log("hello world!")',
     async onMount(editor: MonacoEditor, monaco: Monaco) {
       ref.current = editor
