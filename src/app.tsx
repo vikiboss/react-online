@@ -29,7 +29,7 @@ export function App() {
   ]
 
   const ref = useRef<MonacoEditor>(null)
-  const [_sp, setSp] = useUrlSearchParams('hash-params')
+  const [_, setSp] = useUrlSearchParams('hash-params')
 
   const url = useIframeUrl(
     codeMap[EntryFileName],
@@ -45,7 +45,6 @@ export function App() {
     if (initialCode) {
       const code = window.atob(initialCode)
       globalStore.mutate.codeMap[EntryFileName] = code
-      debouncedHandleChange(code)
     }
   })
 
@@ -60,20 +59,15 @@ export function App() {
 
   const debouncedHandleChange = useDebouncedFn(
     (e = '') => {
-      const file = globalStore.mutate.currentFile
-
-      if (useAutoImportMap) {
-        const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
-        globalStore.mutate.importMap = importMap
-      } else {
-        globalStore.mutate.codeMap[file] = e
-      }
+      globalStore.mutate.codeMap[file] = e
 
       if (isEntry) {
+        const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
+        globalStore.mutate.importMap = importMap
         setSp({ code: e ? window.btoa(e) : undefined })
       }
     },
-    { wait: 500 },
+    { wait: 300 },
   )
 
   useUpdateEffect(() => {

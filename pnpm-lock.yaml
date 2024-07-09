@@ -19,8 +19,8 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1
       '@shined/react-use':
-        specifier: 1.0.0-alpha.3
-        version: 1.0.0-alpha.3(@shined/reactive@0.1.3(react@19.0.0-rc-6f23540c7d-20240528))(react-dom@19.0.0-rc-6f23540c7d-20240528(react@19.0.0-rc-6f23540c7d-20240528))(react@19.0.0-rc-6f23540c7d-20240528)(types-react-dom@19.0.0-rc.0)(types-react@19.0.0-rc.0)
+        specifier: ^1.1.4
+        version: 1.1.4(@shined/reactive@0.1.3(react@19.0.0-rc-6f23540c7d-20240528))(react-dom@19.0.0-rc-6f23540c7d-20240528(react@19.0.0-rc-6f23540c7d-20240528))(react@19.0.0-rc-6f23540c7d-20240528)(types-react-dom@19.0.0-rc.0)(types-react@19.0.0-rc.0)
       '@shined/reactive':
         specifier: ^0.1.3
         version: 0.1.3(react@19.0.0-rc-6f23540c7d-20240528)
@@ -574,8 +574,8 @@ packages:
   '@shikijs/monaco@1.6.1':
     resolution: {integrity: sha512-F7eOOMjCOh8xoaaB+Q7ux2pf3Gf2DP3t7wS7RtWCx8l+GCG5tlC9l3YlfQvnzPmUCApWuSpQlXpbZW9zWUPGRQ==}
 
-  '@shined/react-use@1.0.0-alpha.3':
-    resolution: {integrity: sha512-H3NRJiviBlXVrrTu2586gZby9ueB8+9N0JTma79Z62LLhowaWPPwZ9KkZXw3AlQ/39gcnY8upxydpiF5/+vQzA==}
+  '@shined/react-use@1.1.4':
+    resolution: {integrity: sha512-s3ZNjiZlPYvvvNifbE9GYcFgy+ddo9sfihnX8k1yMFaFnB+1moRCQCWVUJWSAjc3JnxrOUBKP61XPYlTjDcqtA==}
     peerDependencies:
       '@shined/reactive': ^0.1.2
       '@types/react': npm:types-react@rc
@@ -1859,7 +1859,7 @@ snapshots:
     dependencies:
       '@shikijs/core': 1.6.1
 
-  '@shined/react-use@1.0.0-alpha.3(@shined/reactive@0.1.3(react@19.0.0-rc-6f23540c7d-20240528))(react-dom@19.0.0-rc-6f23540c7d-20240528(react@19.0.0-rc-6f23540c7d-20240528))(react@19.0.0-rc-6f23540c7d-20240528)(types-react-dom@19.0.0-rc.0)(types-react@19.0.0-rc.0)':
+  '@shined/react-use@1.1.4(@shined/reactive@0.1.3(react@19.0.0-rc-6f23540c7d-20240528))(react-dom@19.0.0-rc-6f23540c7d-20240528(react@19.0.0-rc-6f23540c7d-20240528))(react@19.0.0-rc-6f23540c7d-20240528)(types-react-dom@19.0.0-rc.0)(types-react@19.0.0-rc.0)':
     optionalDependencies:
       '@shined/reactive': 0.1.3(react@19.0.0-rc-6f23540c7d-20240528)
       '@types/react': types-react@19.0.0-rc.0
