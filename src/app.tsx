@@ -43,7 +43,7 @@ export function App() {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
 
     if (initialCode) {
-      const code = window.atob(initialCode)
+      const code = decodeURIComponent(window.atob(initialCode))
       globalStore.mutate.codeMap[EntryFileName] = code
     }
   })
@@ -64,7 +64,7 @@ export function App() {
       if (isEntry) {
         const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
         globalStore.mutate.importMap = importMap
-        setSp({ code: e ? window.btoa(e) : undefined })
+        setSp({ code: e ? encodeURIComponent(window.btoa(e)) : undefined })
       }
     },
     { wait: 300 },
