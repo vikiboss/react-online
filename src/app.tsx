@@ -101,7 +101,7 @@ export function App() {
                 isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999] opacity-80',
               )}
             >
-              Seting up Monaco Editor...
+              Setting up Monaco Editor...
             </div>
 
             <MonacoEditor
