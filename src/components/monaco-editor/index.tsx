@@ -1,7 +1,6 @@
 import { Editor } from '@monaco-editor/react'
 import { shikiToMonaco } from '@shikijs/monaco'
-import { useRef } from 'react'
-import { getHighlighter } from 'shiki'
+import { createHighlighter } from 'shiki'
 import { setupAta } from './automatic-type-acquisition'
 import { monacoEditorConfig } from './monaco-editor-config'
 
@@ -23,8 +22,6 @@ export type Monaco = typeof monaco
 export function MonacoEditor(props: MonacoEditorProps) {
   const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaStatusChange = () => {}, ...rest } = props
 
-  const ref = useRef<MonacoEditor>(null)
-
   const defaultProps = {
     width: '100%',
     height: '100%',
@@ -32,8 +29,6 @@ export function MonacoEditor(props: MonacoEditorProps) {
     defaultPath: 'index.tsx',
     defaultValue: 'console.log("hello world!")',
     async onMount(editor: MonacoEditor, monaco: Monaco) {
-      ref.current = editor
-
       const fetchType = setupAta(
         (code, path) => {
           monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
@@ -78,7 +73,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
 
       fetchType(editor.getValue())
 
-      const highlighter = await getHighlighter({
+      const highlighter = await createHighlighter({
         themes: ['one-dark-pro', 'catppuccin-latte', ...themes],
         langs: ['tsx', 'jsx', 'javascript', 'typescript', 'json', ...langs],
       })

@@ -46,7 +46,7 @@ export function App() {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
 
     if (initialCode) {
-      const code = window.atob(initialCode)
+      const code = globalThis.atob(initialCode)
       globalStore.mutate.codeMap[EntryFileName] = code
     }
   })
@@ -67,7 +67,7 @@ export function App() {
       if (isEntry) {
         const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
         globalStore.mutate.importMap = importMap
-        setSp({ code: e ? window.btoa(e) : undefined })
+        setSp({ code: e ? globalThis.btoa(e) : undefined })
       }
     },
     { wait: 300 },
@@ -97,11 +97,13 @@ export function App() {
             <div
               className={cn(
                 'absolute grid place-content-center size-full transition-all',
-                isDark ? 'text-white bg-black/80' : 'text-dark bg-white/80',
-                isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999] opacity-80',
+                isDark ? 'text-white bg-black/60' : 'text-dark bg-white/60',
+                isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999]',
               )}
             >
-              Setting up Monaco Editor...
+              <span className={cn('p-2 rounded', isDark ? 'bg-black text-white' : 'bg-white text-dark')}>
+                Setting up Monaco Editor...
+              </span>
             </div>
 
             <MonacoEditor
