@@ -11,7 +11,7 @@ import type { BundledLanguage, BundledTheme } from 'shiki'
 
 export interface MonacoEditorProps extends EditorProps {
   editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions
-  onAtaStatusChange?: (status: boolean) => void
+  onAtaDone?: () => void
   themes?: BundledTheme[]
   langs?: BundledLanguage[]
 }
@@ -20,7 +20,7 @@ export type MonacoEditor = editor.IStandaloneCodeEditor
 export type Monaco = typeof monaco
 
 export function MonacoEditor(props: MonacoEditorProps) {
-  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaStatusChange = () => {}, ...rest } = props
+  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => {}, ...rest } = props
 
   const defaultProps = {
     width: '100%',
@@ -29,18 +29,14 @@ export function MonacoEditor(props: MonacoEditorProps) {
     defaultPath: 'index.tsx',
     defaultValue: 'console.log("hello world!")',
     async onMount(editor: MonacoEditor, monaco: Monaco) {
-      const fetchType = setupAta(
-        (code, path) => {
-          monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
-        },
-        () => onAtaStatusChange(true),
-        () => onAtaStatusChange(false),
-      )
+      const fetchType = setupAta((code, path) => {
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
+      }, onAtaDone)
 
       // disable TS semantic and syntax validation
       monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: true,
-        noSyntaxValidation: true,
+        noSemanticValidation: false,
+        noSyntaxValidation: false,
       })
 
       // disable CSS validation
@@ -50,11 +46,15 @@ export function MonacoEditor(props: MonacoEditorProps) {
 
       monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
         target: monaco.languages.typescript.ScriptTarget.Latest,
+        noUnusedLocals: false,
         allowNonTsExtensions: true,
+        noUnusedParameters: false,
         moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-        module: monaco.languages.typescript.ModuleKind.CommonJS,
+        module: monaco.languages.typescript.ModuleKind.ESNext,
         noEmit: true,
         esModuleInterop: true,
+        emitDecoratorMetadata: true,
+        experimentalDecorators: true,
         jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
         reactNamespace: 'React',
         allowJs: true,
@@ -66,16 +66,11 @@ export function MonacoEditor(props: MonacoEditorProps) {
         noSyntaxValidation: false,
       })
 
-      monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        '<<react-definition-file>>',
-        'file:///node_modules/@react/types/index.d.ts',
-      )
-
       fetchType(editor.getValue())
 
       const highlighter = await createHighlighter({
-        themes: ['one-dark-pro', 'catppuccin-latte', ...themes],
-        langs: ['tsx', 'jsx', 'javascript', 'typescript', 'json', ...langs],
+        themes: ['one-light', 'one-dark-pro', ...themes],
+        langs: ['typescript', 'javascript', 'html', 'css', 'json', ...langs],
       })
 
       shikiToMonaco(highlighter, monaco)

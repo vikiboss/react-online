@@ -7,14 +7,13 @@ interface Props {
   files?: string[]
   selected?: string
   onSelect?: (file: string) => void
-  loadingTypes?: boolean
 }
 
 const repoApi = 'https://ungh.cc/repos/vikiboss/react-online'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export function HeaderBar(props: Props) {
-  const { loadingTypes, files = [], selected = '', onSelect = () => {} } = props
+  const { files = [], selected = '', onSelect = () => {} } = props
   const clipboard = useClipboard()
   const { data } = useSWR(repoApi, fetcher)
 
@@ -42,7 +41,6 @@ export function HeaderBar(props: Props) {
             </div>
           )
         })}
-        {loadingTypes && <div className="h-full flex items-center px-4">Loading dts files...</div>}
       </div>
       <div className="flex items-center gap-4 mr-2">
         <div className="flex gap-2 items-center">

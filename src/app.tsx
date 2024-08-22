@@ -14,16 +14,14 @@ import { defaultImportMap, EntryFileName, getImportMap, globalStore, ImportMapNa
 import { cn } from './utils/class-names'
 
 export function App() {
-  const [file, isEditorReady, codeMap, loadingTypes, importMap, useAutoImportMap, useWaterCSS] =
-    globalStore.useSnapshot((s) => [
-      s.currentFile,
-      s.isEditorReady,
-      s.codeMap,
-      s.loadingTypes,
-      s.importMap,
-      s.useAutoImportMap,
-      s.useWaterCSS,
-    ])
+  const [file, isEditorReady, codeMap, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot((s) => [
+    s.currentFile,
+    s.isEditorReady,
+    s.codeMap,
+    s.importMap,
+    s.useAutoImportMap,
+    s.useWaterCSS,
+  ])
 
   const [isImportMap, isEntry, isAutoImportMap] = [
     file === ImportMapName,
@@ -31,7 +29,7 @@ export function App() {
     file === ImportMapName && useAutoImportMap,
   ]
 
-  const ref = useRef<MonacoEditor>(null)
+  const ref = useRef<MonacoEditor | null>(null)
   const [_, setSp] = useUrlSearchParams('hash-params')
 
   const url = useIframeUrl(
@@ -53,8 +51,9 @@ export function App() {
 
   const updateTheme = useStableFn(() => {
     if (!ref.current) return
-    const theme = isDark ? 'one-dark-pro' : 'catppuccin-latte'
-    ref.current.updateOptions({ theme })
+    // const theme = isDark ? 'vs-dark' : 'vs-light'
+    const theme = isDark ? 'one-dark-pro' : 'one-light'
+    ref.current?.updateOptions({ theme })
   })
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -89,7 +88,6 @@ export function App() {
           globalStore.mutate.currentFile = file
         }}
         selected={file}
-        loadingTypes={loadingTypes}
       />
       <div className="flex h-full border-0 border-r border-solid border-gray/32">
         <div className="flex flex-1">
@@ -101,28 +99,21 @@ export function App() {
                 isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999]',
               )}
             >
-              <span className={cn('p-2 rounded', isDark ? 'bg-black text-white' : 'bg-white text-dark')}>
+              <span className={cn('p-4 rounded-2', isDark ? 'bg-zinc-8 text-white' : 'bg-white text-dark')}>
                 Setting up Monaco Editor...
               </span>
             </div>
 
             <MonacoEditor
-              langs={['typescript', 'json']}
+              className={cn('w-full h-full', isEditorReady ? 'opacity-100' : 'opacity-0')}
               path={isAutoImportMap ? 'Auto Import Map' : file}
               language={isImportMap ? 'json' : 'typescript'}
               value={isAutoImportMap ? JSON.stringify(importMap, null, 2) : codeMap[file]}
               onChange={debouncedHandleChange}
-              onAtaStatusChange={(status) => {
-                globalStore.mutate.loadingTypes = status
-
-                if (status) {
-                  setTimeout(() => {
-                    globalStore.mutate.isEditorReady = true
-                  }, 1200)
-                }
-              }}
+              onAtaDone={() => {}}
               onMount={(e) => {
                 ref.current = e
+                globalStore.mutate.isEditorReady = true
                 updateTheme()
               }}
             />
