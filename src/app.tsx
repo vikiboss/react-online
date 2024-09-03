@@ -1,4 +1,5 @@
 import {
+  useBeforeUnload,
   useDebouncedFn,
   useMediaQuery,
   useMount,
@@ -12,6 +13,7 @@ import { MonacoEditor } from './components/monaco-editor'
 import { useIframeUrl } from './hooks/use-iframe-url'
 import { defaultImportMap, EntryFileName, getImportMap, globalStore, ImportMapName, mergeImportMap } from './store'
 import { cn } from './utils/class-names'
+import { compress, decompress } from './utils/compression'
 
 export function App() {
   const [file, isEditorReady, codeMap, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot((s) => [
@@ -44,7 +46,7 @@ export function App() {
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
 
     if (initialCode) {
-      const code = globalThis.atob(initialCode)
+      const code = decompress(initialCode)
       globalStore.mutate.codeMap[EntryFileName] = code
     }
   })
@@ -66,7 +68,7 @@ export function App() {
       if (isEntry) {
         const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.codeMap[EntryFileName]))
         globalStore.mutate.importMap = importMap
-        setSp({ code: e ? globalThis.btoa(e) : undefined })
+        setSp({ code: e ? compress(e) : undefined })
       }
     },
     { wait: 300 },
