@@ -1,40 +1,40 @@
 {
-	"name": "react-ts-vite-unocss-template",
-	"private": true,
-	"type": "module",
-	"packageManager": "pnpm@8.15.8",
-	"description": "react-ts-vite-unocss template",
-	"scripts": {
-		"dev": "vite",
-		"lint": "biome check",
-		"lint:fix": "biome check --fix --unsafe",
-		"build": "tsc && vite build",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"@monaco-editor/react": "^4.6.0",
-		"@shikijs/monaco": "^1.14.1",
-		"@shined/react-use": "^1.5.0",
-		"@shined/reactive": "^0.1.4",
-		"@typescript/ata": "^0.9.7",
-		"@unocss/reset": "^0.62.2",
-		"classnames": "^2.5.1",
-		"fflate": "^0.8.2",
-		"monaco-editor": "^0.50.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"react-hot-toast": "^2.4.1",
-		"shiki": "^1.14.1",
-		"sucrase": "^3.35.0",
-		"swr": "^2.2.5"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.8.1",
-		"@types/react": "^18.3.4",
-		"@types/react-dom": "^18.3.0",
-		"@vitejs/plugin-react-swc": "^3.7.0",
-		"typescript": "^5.5.4",
-		"unocss": "^0.62.2",
-		"vite": "^5.4.2"
-	}
+  "name": "react-ts-vite-unocss-template",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.12.2",
+  "description": "react-ts-vite-unocss template",
+  "scripts": {
+    "dev": "vite",
+    "lint": "biome check",
+    "lint:fix": "biome check --fix --unsafe",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
+    "@shikijs/monaco": "^1.22.0",
+    "@shined/react-use": "^1.9.3",
+    "@shined/reactive": "^0.2.2",
+    "@typescript/ata": "^0.9.7",
+    "@unocss/reset": "^0.63.6",
+    "classnames": "^2.5.1",
+    "fflate": "^0.8.2",
+    "monaco-editor": "^0.52.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "shiki": "^1.22.0",
+    "sucrase": "^3.35.0",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.1",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "typescript": "^5.5.4",
+    "unocss": "^0.63.6",
+    "vite": "^5.4.2"
+  }
 }
