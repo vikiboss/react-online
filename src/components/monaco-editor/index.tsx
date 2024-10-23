@@ -70,7 +70,8 @@ export function MonacoEditor(props: MonacoEditorProps) {
 
       const highlighter = await createHighlighter({
         themes: ['one-light', 'one-dark-pro', ...themes],
-        langs: ['typescript', 'javascript', 'html', 'css', 'json', ...langs],
+        langs: ['typescript', 'tsx', 'javascript', 'jsx', 'html', 'css', 'json', ...langs],
+        langAlias: { typescript: 'tsx' },
       })
 
       shikiToMonaco(highlighter, monaco)
