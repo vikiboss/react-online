@@ -47,6 +47,8 @@ export function App() {
     if (initialCode) {
       const code = decompress(initialCode)
       globalStore.mutate.codeMap[EntryFileName] = code
+      const importMap = mergeImportMap(defaultImportMap, getImportMap(code))
+      globalStore.mutate.importMap = importMap
     }
   })
 

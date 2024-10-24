@@ -6,9 +6,9 @@ function App() {
   return (
     <div className='p-4'>
       <h3 className='text-amber-5 text-2xl font-medium'>Hello World!</h3>
-      <p>UnoCSS is enabled by default. Just use it!</p>
-      <p>{now}</p>
-      <p>You can import any npm package and just use it!</p>
+      <p>You can import any npm package. Just use it!!</p>
+      <p className='text-gray'>`dayjs` example: now is {now}</p>
+      <p className='text-gray'>PS: UnoCSS is enabled by default.</p>
     </div>
   )
 }
