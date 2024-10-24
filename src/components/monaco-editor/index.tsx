@@ -1,23 +1,23 @@
+import getWasm from 'shiki/wasm'
 import { Editor } from '@monaco-editor/react'
-import { shikiToMonaco } from '@shikijs/monaco'
-import { createHighlighter } from 'shiki'
 import { setupAta } from './automatic-type-acquisition'
+import { shikiToMonaco } from '@shikijs/monaco'
 import { monacoEditorConfig } from './monaco-editor-config'
+import { createHighlighterCore } from 'shiki/core'
 
-import type { EditorProps } from '@monaco-editor/react'
 import type { editor } from 'monaco-editor'
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import type { BundledLanguage, BundledTheme } from 'shiki'
+import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
+import type { EditorProps } from '@monaco-editor/react'
 
 export interface MonacoEditorProps extends EditorProps {
   editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions
   onAtaDone?: () => void
-  themes?: BundledTheme[]
-  langs?: BundledLanguage[]
+  themes?: string[]
+  langs?: string[]
 }
 
 export type MonacoEditor = editor.IStandaloneCodeEditor
-export type Monaco = typeof monaco
+export type Monaco = typeof monacoApi
 
 export function MonacoEditor(props: MonacoEditorProps) {
   const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => {}, ...rest } = props
@@ -68,10 +68,25 @@ export function MonacoEditor(props: MonacoEditorProps) {
 
       fetchType(editor.getValue())
 
-      const highlighter = await createHighlighter({
-        themes: ['one-light', 'one-dark-pro', ...themes],
-        langs: ['typescript', 'tsx', 'javascript', 'jsx', 'html', 'css', 'json', ...langs],
-        langAlias: { typescript: 'tsx' },
+      // const highlighter = await createHighlighter({
+      //   themes: ['one-light', 'one-dark-pro', ...themes],
+      //   langs: ['typescript', 'tsx', 'javascript', 'jsx', 'html', 'css', 'json', ...langs],
+      //   langAlias: { typescript: 'tsx' },
+      // })
+
+      const highlighter = await createHighlighterCore({
+        themes: [import('shiki/themes/one-dark-pro.mjs'), import('shiki/themes/one-light.mjs')],
+        langs: [
+          import('shiki/langs/javascript.mjs'),
+          import('shiki/langs/typescript.mjs'),
+          import('shiki/langs/tsx.mjs'),
+          import('shiki/langs/jsx.mjs'),
+          import('shiki/langs/json.mjs'),
+          import('shiki/langs/html.mjs'),
+          import('shiki/langs/css.mjs'),
+        ],
+        langAlias: { typescript: 'tsx', javascript: 'jsx' },
+        loadWasm: getWasm,
       })
 
       shikiToMonaco(highlighter, monaco)
