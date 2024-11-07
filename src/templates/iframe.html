@@ -2,21 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>React Playground</title>
+    <title>React Online</title>
     <script async src="https://unpkg.com/es-module-shims/dist/es-module-shims.wasm.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@unocss/reset@0.63.4/tailwind.css" />
-    <script src="https://unpkg.com/@unocss/runtime@0.63.4/uno.global.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@unocss/reset@0.64.0/tailwind.css" />
+    <script src="https://unpkg.com/@unocss/runtime@0.64.0/uno.global.js"></script>
     <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />
     <script type="importmap">
       <!-- IMPORT_MAP -->
     </script>
     <script>
-      window.onerror = function (msg, url, lineNo, columnNo, error) {
-        var title = 'Error ocurred, check your code.'
-        var content = `<h3>${title}</h3><pre>${error.toString()}</pre>`
+      window.addEventListener('error', function (event) {
+        const title = 'Error ocurred, check your code please 😨'
+
+        const content = `
+        <div class="p-4">
+          <h3 class="text-red font-medium text-xl mb-2">${title}</h3>
+          <pre>${event.error.toString()}</pre>
+        </div>
+        `
+
         document.getElementById('root').innerHTML = content
-        return true
-      }
+      })
     </script>
     <style>
       :root {

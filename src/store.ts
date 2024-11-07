@@ -11,6 +11,7 @@ export const defaultImportMap: ImportMap = {
     'react-dom/client': 'https://esm.sh/react-dom/client',
     react: 'https://esm.sh/react',
     'react/jsx-runtime': 'https://esm.sh/react/jsx-runtime',
+    '@shined/react-use': 'https://esm.sh/@shined/react-use',
   } as Record<string, string>,
   scopes: {},
 }
