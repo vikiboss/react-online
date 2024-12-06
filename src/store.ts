@@ -8,9 +8,9 @@ export const ImportMapName = 'Import Map'
 export const defaultImportMap: ImportMap = {
   imports: {
     dayjs: 'https://esm.sh/dayjs',
-    'react-dom/client': 'https://esm.sh/react-dom@18/client',
-    react: 'https://esm.sh/react@18',
-    'react/jsx-runtime': 'https://esm.sh/react@18/jsx-runtime',
+    'react-dom/client': 'https://esm.sh/react-dom/client',
+    react: 'https://esm.sh/react',
+    'react/jsx-runtime': 'https://esm.sh/react/jsx-runtime',
     '@shined/react-use': 'https://esm.sh/@shined/react-use',
   } as Record<string, string>,
   scopes: {},
