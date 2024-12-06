@@ -8,9 +8,9 @@ export const ImportMapName = 'Import Map'
 export const defaultImportMap: ImportMap = {
   imports: {
     dayjs: 'https://esm.sh/dayjs',
-    'react-dom/client': 'https://esm.sh/react-dom/client',
-    react: 'https://esm.sh/react',
-    'react/jsx-runtime': 'https://esm.sh/react/jsx-runtime',
+    'react-dom/client': 'https://esm.sh/react-dom@18/client',
+    react: 'https://esm.sh/react@18',
+    'react/jsx-runtime': 'https://esm.sh/react@18/jsx-runtime',
     '@shined/react-use': 'https://esm.sh/@shined/react-use',
   } as Record<string, string>,
   scopes: {},
@@ -36,7 +36,8 @@ export interface ImportMap {
 }
 
 export function getImportMap(code: string) {
-  const importRegex = /import\s+(?:type\s+)?(?:\{[^}]*\}|[^'"]*)\s+from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g
+  const importRegex =
+    /import\s+(?:type\s+)?(?:\{[^}]*\}|[^'"]*)\s+from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g
 
   const importSet = new Set<string>()
 
@@ -44,7 +45,7 @@ export function getImportMap(code: string) {
 
   while (match !== null) {
     const importPath = match[1] || match[2]
-    const isRelative = ['.', '/'].some((e) => importPath.startsWith(e))
+    const isRelative = ['.', '/'].some(e => importPath.startsWith(e))
     if (!isRelative) importSet.add(importPath)
     match = importRegex.exec(code)
   }
@@ -69,12 +70,12 @@ export function mergeImportMap(...maps: ImportMap[]): ImportMap {
   for (const map of maps) {
     importMap.imports = {
       ...importMap.imports,
-      ...(map.imports ?? {}),
+      ...map.imports,
     }
 
     importMap.scopes = {
       ...importMap.scopes,
-      ...(map.scopes ?? {}),
+      ...map.scopes,
     }
   }
 

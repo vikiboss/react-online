@@ -35,7 +35,7 @@ export function useIframeUrl(code = '', importMap = '', deps: DependencyList = [
         color: CanvasText;
       }
     </style>
-    <h3>Error ocurred! Check your code</h3>
+    <h3>An error has occurred! Check your code</h3>
     <pre>${e}</pre>
 `
     }
@@ -45,7 +45,9 @@ export function useIframeUrl(code = '', importMap = '', deps: DependencyList = [
 }
 
 export function getIframeContent(script: string, importMap: string) {
-  const raw = globalStore.mutate.html.replace('<!-- IMPORT_MAP -->', importMap).replace('/** SCRIPT */', script)
+  const raw = globalStore.mutate.html
+    .replace('<!-- IMPORT_MAP -->', importMap)
+    .replace('/** SCRIPT */', script)
 
   if (globalStore.mutate.useWaterCSS) {
     return raw
@@ -53,6 +55,6 @@ export function getIframeContent(script: string, importMap: string) {
 
   return raw
     .split('\n')
-    .filter((line) => !line.includes('water.css'))
+    .filter(line => !line.includes('water.css'))
     .join('\n')
 }
