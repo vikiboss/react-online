@@ -4,24 +4,25 @@
     <meta charset="UTF-8" />
     <title>React Online</title>
     <script async src="https://unpkg.com/es-module-shims/dist/es-module-shims.wasm.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@unocss/reset@0.64.0/tailwind.css" />
-    <script src="https://unpkg.com/@unocss/runtime@0.64.0/uno.global.js"></script>
-    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@unocss/reset@0.65.1/tailwind.css" />
+    <script src="https://unpkg.com/@unocss/runtime@0.65.1/uno.global.js"></script>
+    <!-- LINK -->
     <script type="importmap">
       <!-- IMPORT_MAP -->
     </script>
     <script>
       window.addEventListener('error', function (event) {
-        const title = 'Error ocurred, check your code please 😨'
+        const title = '🤔️ Runtime Error, Check your Code'
 
         const content = `
         <div class="p-4">
           <h3 class="text-red font-medium text-xl mb-2">${title}</h3>
-          <pre>${event.error.toString()}</pre>
+          <pre class="text-wrap">${event.error.toString()}</pre>
         </div>
         `
 
-        document.getElementById('root').innerHTML = content
+        document.getElementById('mask').innerHTML = content
+        document.getElementById('mask').classList.remove('hidden')
       })
     </script>
     <style>
@@ -32,6 +33,7 @@
   </head>
   <body>
     <div id="root"></div>
+    <div id="mask" class="hidden fixed inset-0 bg-dark/80 z-50"></div>
     <script type="module">
       /** SCRIPT */
     </script>

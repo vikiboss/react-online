@@ -1,5 +1,4 @@
 import appTsx from '@/templates/app?raw'
-import iframeHtml from '@/templates/iframe.html?raw'
 import { create } from '@shined/reactive'
 
 export const EntryFileName = 'app.tsx'
@@ -20,11 +19,10 @@ export const globalStore = create({
   useWaterCSS: false,
   useAutoImportMap: true,
   isEditorReady: false,
-  html: iframeHtml,
   loadingTypes: false,
   importMap: defaultImportMap,
   currentFile: EntryFileName,
-  codeMap: {
+  sourceCodes: {
     [EntryFileName]: appTsx,
     [ImportMapName]: JSON.stringify(defaultImportMap, null, 2),
   } as Record<string, string>,

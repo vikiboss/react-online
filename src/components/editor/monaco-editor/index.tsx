@@ -20,7 +20,7 @@ export type MonacoEditor = editor.IStandaloneCodeEditor
 export type Monaco = typeof monacoApi
 
 export function MonacoEditor(props: MonacoEditorProps) {
-  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => {}, ...rest } = props
+  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => { }, ...rest } = props
 
   const defaultProps = {
     width: '100%',
