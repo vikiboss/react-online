@@ -17,6 +17,7 @@
     <script>
       window.addEventListener('error', function (event) {
         const title = '🤔️ Runtime Error, Check your Code'
+        const markDiv = document.getElementById('mask')
 
         const content = `
         <div class="p-4 h-full flex flex-col justify-center items-center gap-4">
@@ -25,11 +26,9 @@
         </div>
         `
 
-        document.getElementById('mask').innerHTML = content
-        document.getElementById('mask').addEventListener('click', () => {
-          document.getElementById('mask').classList.add('hidden')
-        })
-        document.getElementById('mask').classList.remove('hidden')
+        markDiv.innerHTML = content
+        markDiv.addEventListener('click', () => markDiv.classList.add('hidden'))
+        markDiv.classList.remove('hidden')
       })
     </script>
   </head>
