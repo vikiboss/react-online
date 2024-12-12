@@ -74,7 +74,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
       //   langAlias: { typescript: 'tsx' },
       // })
 
-      const highlighter = await createHighlighterCore({
+      createHighlighterCore({
         themes: [import('shiki/themes/one-dark-pro.mjs'), import('shiki/themes/one-light.mjs')],
         langs: [
           import('shiki/langs/javascript.mjs'),
@@ -85,11 +85,12 @@ export function MonacoEditor(props: MonacoEditorProps) {
           import('shiki/langs/html.mjs'),
           import('shiki/langs/css.mjs'),
         ],
-        langAlias: { typescript: 'tsx', javascript: 'jsx' },
+        langAlias: { typescript: 'tsx', javascript: 'jsx', jsonc: 'json' },
         loadWasm: getWasm,
+      }).then((highlighter) => {
+        shikiToMonaco(highlighter, monaco)
       })
 
-      shikiToMonaco(highlighter, monaco)
 
       editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig })
 

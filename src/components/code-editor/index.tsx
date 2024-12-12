@@ -5,14 +5,13 @@ import { useEffect, useRef } from 'react'
 import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUpdateEffect, useUrlSearchParams } from '@shined/react-use'
 import { compress, decompress } from '@/utils/compression'
 
-export function Editor() {
-  const [file, isEditorReady, codeMap, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot((s) => [
+export function CodeEditor() {
+  const [file, isEditorReady, codeMap, importMap, useAutoImportMap] = globalStore.useSnapshot((s) => [
     s.currentFile,
     s.isEditorReady,
     s.sourceCodes,
     s.importMap,
     s.useAutoImportMap,
-    s.useWaterCSS,
   ])
 
   const [isImportMap, isEntry, isAutoImportMap] = [

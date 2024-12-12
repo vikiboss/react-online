@@ -17,7 +17,12 @@ export function PreviewZone() {
     let finalHtml = ''
 
     try {
-      const output = transform(codeMap[EntryFileName], {
+      const output = transform(`
+        import ReactDOM from 'react-dom/client' 
+        ${codeMap[EntryFileName]}
+        const rootDiv = document.getElementById('root')
+        rootDiv && ReactDOM.createRoot(rootDiv).render(<App />)
+        `, {
         transforms: ['typescript', 'jsx'],
         jsxRuntime: 'automatic',
         production: true,

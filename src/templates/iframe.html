@@ -15,13 +15,16 @@
         const title = '🤔️ Runtime Error, Check your Code'
 
         const content = `
-        <div class="p-4">
+        <div class="p-4 h-full flex flex-col justify-center items-center gap-4">
           <h3 class="text-red font-medium text-xl mb-2">${title}</h3>
           <pre class="text-wrap">${event.error.toString()}</pre>
         </div>
         `
 
         document.getElementById('mask').innerHTML = content
+        document.getElementById('mask').addEventListener('click', () => {
+          document.getElementById('mask').classList.add('hidden')
+        })
         document.getElementById('mask').classList.remove('hidden')
       })
     </script>
