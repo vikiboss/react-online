@@ -1,41 +1,52 @@
 import { useMemo } from 'react'
 import { transform } from 'sucrase'
-import html from '../../templates/iframe.html?raw'
-import { EntryFileName, globalStore, ImportMapName } from '@/store'
+import { EntryFilename, store, ImportMapName } from '@/store'
 
 export function PreviewZone() {
-  const [codeMap, importMap, useAutoImportMap, useWaterCSS] = globalStore.useSnapshot(s => [
-    s.sourceCodes,
-    s.importMap,
-    s.useAutoImportMap,
-    s.useWaterCSS,
-  ])
+  const [codeMap, importMap] = store.useSnapshot(s => [s.fileTree, s.importMap])
 
-  const finalIM = useAutoImportMap ? importMap : JSON.parse(codeMap[ImportMapName])
+  const config = store.useSnapshot(s => s.config)
+  const finalIM = config.autoImportMap ? importMap : codeMap[ImportMapName]
 
   const url = useMemo(() => {
     let finalHtml = ''
 
     try {
-      const output = transform(`
+      const output = transform(
+        `
         import ReactDOM from 'react-dom/client' 
-        ${codeMap[EntryFileName]}
+        ${codeMap[EntryFilename]}
         const rootDiv = document.getElementById('root')
         rootDiv && ReactDOM.createRoot(rootDiv).render(<App />)
-        `, {
-        transforms: ['typescript', 'jsx'],
-        jsxRuntime: 'automatic',
-        production: true,
-        filePath: 'index.js',
-        sourceMapOptions: {
-          compiledFilename: 'index.min.js',
-        },
-      })
+        `,
+        {
+          transforms: ['typescript', 'jsx'],
+          jsxRuntime: 'automatic',
+          production: true,
+          filePath: 'index.js',
+          sourceMapOptions: {
+            compiledFilename: 'index.min.js',
+          },
+        }
+      )
 
-      finalHtml = getIframeContent(output.code, finalIM, useWaterCSS)
+      finalHtml = codeMap['index.html']
+        .replace(
+          '<script type="importmap"></script>',
+          `<script type="importmap">${finalIM}</script>`
+        )
+        .replace('/** SCRIPT_PLACEHOLDER */', output.code)
+        .replace('/* STYLE_PLACEHOLDER */', codeMap['style.css'] || '')
+
+      if (config.waterCSS) {
+        finalHtml = finalHtml.replace(
+          '<!-- LINK_PLACEHOLDER -->',
+          '<!-- LINK_PLACEHOLDER -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />'
+        )
+      }
     } catch (e) {
-      finalHtml = html.replace(
-        '/** SCRIPT */',
+      finalHtml = codeMap['index.html'].replace(
+        '/** SCRIPT__PLACEHOLDER */',
         `
         const title = '🤔️ Error occurred, check your cod, please'
 
@@ -52,22 +63,17 @@ export function PreviewZone() {
     }
 
     return URL.createObjectURL(new Blob([finalHtml], { type: 'text/html' }))
-  }, [codeMap, finalIM, useWaterCSS])
+  }, [codeMap, finalIM, config.waterCSS])
 
-  return <iframe title='view' className='flex-1 border-0' src={url} />
-}
-
-function getIframeContent(script = '', importMap: Record<string, string> = {}, useWaterCSS = true) {
-  const raw = html
-    .replace('<!-- IMPORT_MAP -->', JSON.stringify(importMap, null, 2))
-    .replace('/** SCRIPT */', script)
-
-  if (useWaterCSS) {
-    return raw.replace(
-      '<!-- LINK -->',
-      '<!-- LINK -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />'
-    )
-  }
-
-  return raw
+  return (
+    <iframe
+      className='flex-1 border-0'
+      src={url}
+      title='React Online Preview'
+      width='100%'
+      allowFullScreen
+      sandbox='allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads allow-presentation allow-pointer-lock allow-top-navigation allow-storage-access-by-user-activation allow-orientation-lock'
+      referrerPolicy='unsafe-url'
+    />
+  )
 }

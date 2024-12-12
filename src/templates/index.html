@@ -6,10 +6,14 @@
     <script async src="https://unpkg.com/es-module-shims/dist/es-module-shims.wasm.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@unocss/reset@0.65.1/tailwind.css" />
     <script src="https://unpkg.com/@unocss/runtime@0.65.1/uno.global.js"></script>
-    <!-- LINK -->
-    <script type="importmap">
-      <!-- IMPORT_MAP -->
-    </script>
+    <!-- LINK_PLACEHOLDER -->
+    <script type="importmap"></script>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      /* STYLE_PLACEHOLDER */
+    </style>
     <script>
       window.addEventListener('error', function (event) {
         const title = '🤔️ Runtime Error, Check your Code'
@@ -28,17 +32,12 @@
         document.getElementById('mask').classList.remove('hidden')
       })
     </script>
-    <style>
-      :root {
-        color-scheme: light dark;
-      }
-    </style>
   </head>
   <body>
     <div id="root"></div>
     <div id="mask" class="hidden fixed inset-0 bg-dark/80 z-50"></div>
     <script type="module">
-      /** SCRIPT */
+      /** SCRIPT_PLACEHOLDER */
     </script>
   </body>
 </html>

@@ -8,6 +8,7 @@ import { createHighlighterCore } from 'shiki/core'
 import type { editor } from 'monaco-editor'
 import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
 import type { EditorProps } from '@monaco-editor/react'
+import toast from 'react-hot-toast'
 
 export interface MonacoEditorProps extends EditorProps {
   editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions
@@ -25,9 +26,9 @@ export function MonacoEditor(props: MonacoEditorProps) {
   const defaultProps = {
     width: '100%',
     height: '100%',
-    defaultLanguage: 'typescript',
-    defaultPath: 'index.tsx',
-    defaultValue: 'console.log("hello world!")',
+    // defaultLanguage: 'typescript',
+    // defaultPath: 'index.tsx',
+    // defaultValue: 'console.log("hello world!")',
     async onMount(editor: MonacoEditor, monaco: Monaco) {
       const fetchType = setupAta((code, path) => {
         monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
@@ -65,6 +66,11 @@ export function MonacoEditor(props: MonacoEditorProps) {
         noSemanticValidation: false,
         noSyntaxValidation: false,
       })
+
+
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+        toast.success('Saved!')
+      });
 
       fetchType(editor.getValue())
 

@@ -1,37 +1,32 @@
 import { cn } from '@/utils/class-names'
 import { MonacoEditor } from './monaco-editor'
-import { defaultImportMap, EntryFileName, getImportMap, globalStore, ImportMapName, mergeImportMap } from '@/store'
+import { DEFAULT_IMPORT_MAP, EntryFilename, store } from '@/store'
 import { useEffect, useRef } from 'react'
-import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUpdateEffect, useUrlSearchParams } from '@shined/react-use'
-import { compress, decompress } from '@/utils/compression'
+import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
+import { compress, decompress } from '@/utils/url-compression'
+import { mergeImportMap, parseImportMapFromCode } from '@/utils/import-map'
+import getLanguageByFileName from '@/utils/lang'
 
 export function CodeEditor() {
-  const [file, isEditorReady, codeMap, importMap, useAutoImportMap] = globalStore.useSnapshot((s) => [
-    s.currentFile,
+  const [activeFile, isEditorReady, fileTree] = store.useSnapshot((s) => [
+    s.activeFile,
     s.isEditorReady,
-    s.sourceCodes,
-    s.importMap,
-    s.useAutoImportMap,
+    s.fileTree,
   ])
-
-  const [isImportMap, isEntry, isAutoImportMap] = [
-    file === ImportMapName,
-    file === EntryFileName,
-    file === ImportMapName && useAutoImportMap,
-  ]
 
   const ref = useRef<MonacoEditor | null>(null)
   const [_, setSp] = useUrlSearchParams('hash-params')
   const isDark = useMediaQuery('(prefers-color-scheme: dark)')
 
   useMount(() => {
+    store.mutate.isEditorReady = false
     const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
 
     if (initialCode) {
       const code = decompress(initialCode)
-      globalStore.mutate.sourceCodes[EntryFileName] = code
-      const importMap = mergeImportMap(defaultImportMap, getImportMap(code))
-      globalStore.mutate.importMap = importMap
+      store.mutate.fileTree[EntryFilename] = code
+      const importMap = mergeImportMap(JSON.parse(DEFAULT_IMPORT_MAP), parseImportMapFromCode(code))
+      store.mutate.importMap = JSON.stringify(importMap, null, 2)
     }
   })
 
@@ -48,24 +43,16 @@ export function CodeEditor() {
 
   const debouncedHandleChange = useDebouncedFn(
     (e = '') => {
-      globalStore.mutate.sourceCodes[file] = e
+      store.mutate.fileTree[activeFile] = e
 
-      if (isEntry) {
-        const importMap = mergeImportMap(defaultImportMap, getImportMap(globalStore.mutate.sourceCodes[EntryFileName]))
-        globalStore.mutate.importMap = importMap
+      if (activeFile === 'index.tsx') {
+        const importMap = mergeImportMap(JSON.parse(DEFAULT_IMPORT_MAP), parseImportMapFromCode(store.mutate.fileTree[EntryFilename]))
+        store.mutate.importMap = JSON.stringify(importMap, null, 2)
         setSp({ code: e ? compress(e) : undefined })
       }
     },
     { wait: 300 },
   )
-
-  useUpdateEffect(() => {
-    if (isAutoImportMap) {
-      ref.current?.updateOptions({ readOnly: true })
-    } else {
-      ref.current?.updateOptions({ readOnly: false })
-    }
-  }, [isAutoImportMap])
 
 
   return (
@@ -85,14 +72,14 @@ export function CodeEditor() {
 
         <MonacoEditor
           className={cn('w-full h-full', isEditorReady ? 'opacity-100' : 'opacity-0')}
-          path={isAutoImportMap ? 'Auto Import Map' : file}
-          language={isImportMap ? 'json' : 'typescript'}
-          value={isAutoImportMap ? JSON.stringify(importMap, null, 2) : codeMap[file]}
+          path={activeFile}
+          language={getLanguageByFileName(activeFile)}
+          value={fileTree[activeFile]}
           onChange={debouncedHandleChange}
           onAtaDone={() => { }}
           onMount={(e) => {
             ref.current = e
-            globalStore.mutate.isEditorReady = true
+            store.mutate.isEditorReady = true
             updateTheme()
           }}
         />
