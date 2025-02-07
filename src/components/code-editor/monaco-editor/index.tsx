@@ -5,6 +5,7 @@ import { setupAta } from './automatic-type-acquisition'
 import { shikiToMonaco } from '@shikijs/monaco'
 import { monacoEditorConfig } from './monaco-editor-config'
 import { createHighlighterCore } from 'shiki/core'
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 import type { editor } from 'monaco-editor'
 import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
@@ -106,6 +107,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
         ],
         langAlias: { typescript: 'tsx', javascript: 'jsx', jsonc: 'json' },
         loadWasm: getWasm,
+        engine: createJavaScriptRegexEngine(),
       }).then(highlighter => {
         shikiToMonaco(highlighter, monaco)
       })
