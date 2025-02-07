@@ -1,5 +1,6 @@
 import getWasm from 'shiki/wasm'
-import { Editor } from '@monaco-editor/react'
+import toast from 'react-hot-toast'
+import { Editor, loader } from '@monaco-editor/react'
 import { setupAta } from './automatic-type-acquisition'
 import { shikiToMonaco } from '@shikijs/monaco'
 import { monacoEditorConfig } from './monaco-editor-config'
@@ -8,7 +9,6 @@ import { createHighlighterCore } from 'shiki/core'
 import type { editor } from 'monaco-editor'
 import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
 import type { EditorProps } from '@monaco-editor/react'
-import toast from 'react-hot-toast'
 
 export interface MonacoEditorProps extends EditorProps {
   editorInitialConfig?: editor.IEditorOptions & editor.IGlobalEditorOptions
@@ -20,8 +20,22 @@ export interface MonacoEditorProps extends EditorProps {
 export type MonacoEditor = editor.IStandaloneCodeEditor
 export type Monaco = typeof monacoApi
 
+loader.config({
+  paths: {
+    vs: 'https://unpkg.com/monaco-editor@0.52.2/min/vs',
+  },
+})
+
 export function MonacoEditor(props: MonacoEditorProps) {
-  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => { }, ...rest } = props
+  const {
+    onMount,
+    theme,
+    themes = [],
+    langs = [],
+    editorInitialConfig,
+    onAtaDone = () => {},
+    ...rest
+  } = props
 
   const defaultProps = {
     width: '100%',
@@ -67,10 +81,9 @@ export function MonacoEditor(props: MonacoEditorProps) {
         noSyntaxValidation: false,
       })
 
-
       editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
         toast.success('Saved!')
-      });
+      })
 
       fetchType(editor.getValue())
 
@@ -93,10 +106,9 @@ export function MonacoEditor(props: MonacoEditorProps) {
         ],
         langAlias: { typescript: 'tsx', javascript: 'jsx', jsonc: 'json' },
         loadWasm: getWasm,
-      }).then((highlighter) => {
+      }).then(highlighter => {
         shikiToMonaco(highlighter, monaco)
       })
-
 
       editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig })
 
