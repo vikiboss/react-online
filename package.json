@@ -2,7 +2,7 @@
   "name": "react-ts-vite-unocss-template",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@10.18.2",
   "description": "react-ts-vite-unocss template",
   "scripts": {
     "dev": "vite",
@@ -14,28 +14,28 @@
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@shikijs/monaco": "^2.5.0",
-    "@shined/react-use": "^1.11.0",
+    "@shined/react-use": "^1.12.0",
     "@shined/reactive": "^0.2.6",
-    "@typescript/ata": "^0.9.7",
+    "@typescript/ata": "^0.9.8",
     "@unocss/reset": "^65.5.0",
     "classnames": "^2.5.1",
     "fflate": "^0.8.2",
     "monaco-editor": "^0.52.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
     "shiki": "^2.5.0",
     "sucrase": "^3.35.0",
-    "swr": "^2.3.3"
+    "swr": "^2.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/react": "^19.0.12",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.1",
-    "dayjs": "^1.11.13",
-    "typescript": "^5.8.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "dayjs": "^1.11.18",
+    "typescript": "^5.9.3",
     "unocss": "^65.5.0",
-    "vite": "^6.2.2"
+    "vite": "^6.3.6"
   }
 }
