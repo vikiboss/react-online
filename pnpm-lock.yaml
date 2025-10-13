@@ -18,8 +18,8 @@ importers:
         specifier: ^1.12.0
         version: 1.12.0(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@shined/reactive':
-        specifier: ^0.2.6
-        version: 0.2.6(@shined/react-use@1.12.0(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
+        specifier: ^0.3.1
+        version: 0.3.1(@shined/react-use@1.12.0(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       '@typescript/ata':
         specifier: ^0.9.8
         version: 0.9.8(typescript@5.9.3)
@@ -662,8 +662,8 @@ packages:
       react-dom:
         optional: true
 
-  '@shined/reactive@0.2.6':
-    resolution: {integrity: sha512-5PsK4Bv0FIOuPfiMmvY0QTw11od0oRQRPh1ptV1tdxLZT4t7mYeisdR7z6IKtSZNnRcXqx2Yl+s8e8+0y4HWYw==}
+  '@shined/reactive@0.3.1':
+    resolution: {integrity: sha512-4gFJmBJNGv3IKI6gwceFSHqomd3hcvQFJxQ7zilj5lHjDdrzhSUKknxP8hnumLNkKyrz58pBmT9+SZr5ZaWJyA==}
     peerDependencies:
       '@shined/react-use': '>= 1.0.0'
       react: '>= 16.8.0'
@@ -1907,7 +1907,7 @@ snapshots:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
-  '@shined/reactive@0.2.6(@shined/react-use@1.12.0(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
+  '@shined/reactive@0.3.1(@shined/react-use@1.12.0(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
     dependencies:
       use-sync-external-store: 1.6.0(react@19.2.0)
     optionalDependencies:

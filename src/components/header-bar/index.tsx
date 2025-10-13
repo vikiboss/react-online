@@ -7,10 +7,16 @@ const repoApi = 'https://ungh.cc/repos/vikiboss/react-online'
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export function HeaderBar() {
-  const [fileTree, activeFile] = store.useSnapshot(s => [s.fileTree, s.activeFile])
-  const clipboard = useClipboard()
+  const [fileTree, activeFile, config] = store.useSnapshot(s => [
+    s.fileTree,
+    s.activeFile,
+    s.config,
+  ])
+  const sharableCp = useClipboard()
+  const shortenCp = useClipboard()
   const { data } = useSWR(repoApi, fetcher)
-  const config = store.useSnapshot(s => s.config)
+
+  console.log('config', config)
 
   return (
     <div className='h-4vh w-full min-h-36px flex justify-between border-0 border-b border-solid border-gray/24'>
@@ -62,16 +68,16 @@ export function HeaderBar() {
           />
           <label htmlFor='use-auto-import-map'>auto Import Map</label>
         </div> */}
-        <button type='button' onClick={() => clipboard.copy(location.href)}>
-          {clipboard.copied ? 'Copied' : 'Copy Sharable URL'}
+        <button type='button' onClick={() => sharableCp.copy(location.href)}>
+          {sharableCp.copied ? 'Copied' : 'Copy Sharable URL'}
         </button>
         <button
           type='button'
           onClick={() =>
-            clipboard.copy(`https://shorten.viki.moe?url=${encodeURIComponent(location.href)}`)
+            shortenCp.copy(`https://shorten.viki.moe?url=${encodeURIComponent(location.href)}`)
           }
         >
-          {clipboard.copied ? 'Copied' : 'Copy Shorten URL'}
+          {shortenCp.copied ? 'Copied' : 'Copy Shorten URL'}
         </button>
         <a href='https://github.com/vikiboss/react-online'>
           Star on GitHub ({Number(data?.repo?.stars ?? '').toLocaleString()}+)
