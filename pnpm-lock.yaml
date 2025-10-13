@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@monaco-editor/react':
         specifier: ^4.7.0
-        version: 4.7.0(monaco-editor@0.52.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 4.7.0(monaco-editor@0.54.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@shikijs/monaco':
         specifier: ^2.5.0
         version: 2.5.0
@@ -33,8 +33,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       monaco-editor:
-        specifier: ^0.52.2
-        version: 0.52.2
+        specifier: ^0.54.0
+        version: 0.54.0
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -65,7 +65,7 @@ importers:
         version: 19.2.1(@types/react@19.2.2)
       '@vitejs/plugin-react-swc':
         specifier: ^3.11.0
-        version: 3.11.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))
+        version: 3.11.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
@@ -74,10 +74,10 @@ importers:
         version: 5.9.3
       unocss:
         specifier: ^65.5.0
-        version: 65.5.0(postcss@8.5.6)(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
+        version: 65.5.0(postcss@8.5.6)(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
       vite:
-        specifier: ^6.3.6
-        version: 6.3.6(jiti@2.6.1)(tsx@4.19.2)
+        specifier: ^7.1.9
+        version: 7.1.9(jiti@2.6.1)(tsx@4.19.2)
 
 packages:
 
@@ -1015,6 +1015,9 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
+  dompurify@3.1.7:
+    resolution: {integrity: sha512-VaTstWtsneJY8xzy7DekmYWEOZcmzIe3Qb3zPd4STve1OBTa+e+WmS1ITQec1fZYXI3HCsOZZiSMpG6oxoWMWQ==}
+
   duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
 
@@ -1154,6 +1157,11 @@ packages:
   magic-string@0.30.19:
     resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
 
+  marked@14.0.0:
+    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   mdast-util-to-hast@13.2.0:
     resolution: {integrity: sha512-QGYKEuUsYT9ykKBCMOEDLsU5JRObWQusAolFMeko/tYPufNkRffBAQjIE+99jbA87xv6FgmjLtwjh9wBWajwAA==}
 
@@ -1186,8 +1194,8 @@ packages:
   mlly@1.8.0:
     resolution: {integrity: sha512-l8D9ODSRWLe2KHJSifWGwBqpTZXIXTeo8mlKjY+E2HAakaTeNpqAyBZ8GSqLzHgw4XmHmC8whvpjJNMbFZN7/g==}
 
-  monaco-editor@0.52.2:
-    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+  monaco-editor@0.54.0:
+    resolution: {integrity: sha512-hx45SEUoLatgWxHKCmlLJH81xBo0uXP4sRkESUpmDQevfi+e7K1VuiSprK6UpQ8u4zOcKNiH0pMvHvlMWA/4cw==}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -1456,19 +1464,19 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@6.3.6:
-    resolution: {integrity: sha512-0msEVHJEScQbhkbVTb/4iHZdJ6SXp/AvxL2sjwYQFfBqleHtnCqv1J3sa9zbWz/6kW1m9Tfzn92vW+kZ1WV6QA==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+  vite@7.1.9:
+    resolution: {integrity: sha512-4nVGliEpxmhCL8DslSAUdxlB6+SMrhB0a1v5ijlh1xB1nEPuy1mxaHxysVucLHuWryAxLWg6a5ei+U4TLn/rFg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
-      less: '*'
+      less: ^4.0.0
       lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
       yaml: ^2.4.2
@@ -1779,10 +1787,10 @@ snapshots:
     dependencies:
       state-local: 1.0.7
 
-  '@monaco-editor/react@4.7.0(monaco-editor@0.52.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@monaco-editor/react@4.7.0(monaco-editor@0.54.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@monaco-editor/loader': 1.6.0
-      monaco-editor: 0.52.2
+      monaco-editor: 0.54.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
@@ -1992,13 +2000,13 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@unocss/astro@65.5.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))':
+  '@unocss/astro@65.5.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))':
     dependencies:
       '@unocss/core': 65.5.0
       '@unocss/reset': 65.5.0
-      '@unocss/vite': 65.5.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
+      '@unocss/vite': 65.5.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
     optionalDependencies:
-      vite: 6.3.6(jiti@2.6.1)(tsx@4.19.2)
+      vite: 7.1.9(jiti@2.6.1)(tsx@4.19.2)
     transitivePeerDependencies:
       - vue
 
@@ -2120,7 +2128,7 @@ snapshots:
     dependencies:
       '@unocss/core': 65.5.0
 
-  '@unocss/vite@65.5.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))':
+  '@unocss/vite@65.5.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@unocss/config': 65.5.0
@@ -2130,15 +2138,15 @@ snapshots:
       magic-string: 0.30.19
       tinyglobby: 0.2.15
       unplugin-utils: 0.2.5
-      vite: 6.3.6(jiti@2.6.1)(tsx@4.19.2)
+      vite: 7.1.9(jiti@2.6.1)(tsx@4.19.2)
     transitivePeerDependencies:
       - vue
 
-  '@vitejs/plugin-react-swc@3.11.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))':
+  '@vitejs/plugin-react-swc@3.11.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@swc/core': 1.13.5
-      vite: 6.3.6(jiti@2.6.1)(tsx@4.19.2)
+      vite: 7.1.9(jiti@2.6.1)(tsx@4.19.2)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -2295,6 +2303,8 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
+
+  dompurify@3.1.7: {}
 
   duplexer@0.1.2: {}
 
@@ -2475,6 +2485,8 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  marked@14.0.0: {}
+
   mdast-util-to-hast@13.2.0:
     dependencies:
       '@types/hast': 3.0.4
@@ -2519,7 +2531,10 @@ snapshots:
       pkg-types: 1.3.1
       ufo: 1.6.1
 
-  monaco-editor@0.52.2: {}
+  monaco-editor@0.54.0:
+    dependencies:
+      dompurify: 3.1.7
+      marked: 14.0.0
 
   mrmime@2.0.1: {}
 
@@ -2795,9 +2810,9 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  unocss@65.5.0(postcss@8.5.6)(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3)):
+  unocss@65.5.0(postcss@8.5.6)(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3)):
     dependencies:
-      '@unocss/astro': 65.5.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
+      '@unocss/astro': 65.5.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
       '@unocss/cli': 65.5.0
       '@unocss/core': 65.5.0
       '@unocss/postcss': 65.5.0(postcss@8.5.6)
@@ -2813,9 +2828,9 @@ snapshots:
       '@unocss/transformer-compile-class': 65.5.0
       '@unocss/transformer-directives': 65.5.0
       '@unocss/transformer-variant-group': 65.5.0
-      '@unocss/vite': 65.5.0(vite@6.3.6(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
+      '@unocss/vite': 65.5.0(vite@7.1.9(jiti@2.6.1)(tsx@4.19.2))(vue@3.5.12(typescript@5.9.3))
     optionalDependencies:
-      vite: 6.3.6(jiti@2.6.1)(tsx@4.19.2)
+      vite: 7.1.9(jiti@2.6.1)(tsx@4.19.2)
     transitivePeerDependencies:
       - postcss
       - supports-color
@@ -2840,7 +2855,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@6.3.6(jiti@2.6.1)(tsx@4.19.2):
+  vite@7.1.9(jiti@2.6.1)(tsx@4.19.2):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
