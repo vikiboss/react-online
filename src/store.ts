@@ -27,7 +27,7 @@ export const DEFAULT_IMPORT_MAP: string = JSON.stringify(
 export const store = create({
   config: {
     unoCSS: true,
-    waterCSS: false,
+    waterCSS: true,
     autoImportMap: true,
   },
   fileTree: {

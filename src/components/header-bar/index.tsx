@@ -65,6 +65,14 @@ export function HeaderBar() {
         <button type='button' onClick={() => clipboard.copy(location.href)}>
           {clipboard.copied ? 'Copied' : 'Copy Sharable URL'}
         </button>
+        <button
+          type='button'
+          onClick={() =>
+            clipboard.copy(`https://shorten.viki.moe?url=${encodeURIComponent(location.href)}`)
+          }
+        >
+          {clipboard.copied ? 'Copied' : 'Copy Shorten URL'}
+        </button>
         <a href='https://github.com/vikiboss/react-online'>
           Star on GitHub ({Number(data?.repo?.stars ?? '').toLocaleString()}+)
         </a>
