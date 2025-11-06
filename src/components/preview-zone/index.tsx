@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 import { transform } from 'sucrase'
-import { EntryFilename, store, ImportMapName } from '@/store'
+import { useMediaQuery } from '@shined/react-use'
+import { EntryFilename, ImportMapName, configStore, filesStore } from '@/stores'
 
 export function PreviewZone() {
-  const [codeMap, importMap] = store.useSnapshot(s => [s.fileTree, s.importMap])
+  const { fileTree: codeMap, importMap: finalIM } = filesStore.useSnapshot()
+  const config = configStore.useSnapshot()
+  const systemIsDark = useMediaQuery('(prefers-color-scheme: dark)')
 
-  const config = store.useSnapshot(s => s.config)
-  // Always use importMap as it's kept in sync with fileTree[ImportMapName]
-  // In auto mode: updated by code changes and manual Import Map edits
-  // In manual mode: updated by manual Import Map edits only
-  const finalIM = importMap
+  // Determine actual theme based on user setting
+  const isDark = config.theme === 'system' ? systemIsDark : config.theme === 'dark'
 
   const url = useMemo(() => {
     let finalHtml = ''
@@ -34,17 +34,15 @@ export function PreviewZone() {
       )
 
       finalHtml = codeMap['index.html']
-        .replace(
-          '<script type="importmap"></script>',
-          `<script type="importmap">${finalIM}</script>`,
-        )
+        .replace('<script type="importmap"></script>', `<script type="importmap">${finalIM}</script>`)
         .replace('/** SCRIPT_PLACEHOLDER */', output.code)
         .replace('/* STYLE_PLACEHOLDER */', codeMap['style.css'] || '')
 
       if (config.waterCSS) {
+        const waterCssTheme = isDark ? 'dark' : 'light'
         finalHtml = finalHtml.replace(
           '<!-- LINK_PLACEHOLDER -->',
-          '<!-- LINK_PLACEHOLDER -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />',
+          `<!-- LINK_PLACEHOLDER -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/${waterCssTheme}.css" />`,
         )
       }
     } catch (e) {
@@ -66,14 +64,13 @@ export function PreviewZone() {
     }
 
     return URL.createObjectURL(new Blob([finalHtml], { type: 'text/html' }))
-  }, [codeMap, finalIM, config.waterCSS])
+  }, [codeMap, finalIM, config.waterCSS, isDark])
 
   return (
     <iframe
-      className="flex-1 border-0"
+      className="w-full h-full border-0"
       src={url}
       title="React Online Preview"
-      width="100%"
       allowFullScreen
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads allow-presentation allow-pointer-lock allow-top-navigation allow-storage-access-by-user-activation allow-orientation-lock"
       referrerPolicy="unsafe-url"

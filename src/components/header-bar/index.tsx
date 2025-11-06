@@ -1,98 +1,39 @@
-import useSWR from 'swr'
-import { cn } from '@/utils/class-names'
-import { store } from '@/store'
-import { useClipboard } from '@shined/react-use'
-
-const repoApi = 'https://ungh.cc/repos/vikiboss/react-online'
-const fetcher = (url: string) => fetch(url).then(res => res.json())
+import { useState } from 'react'
+import { filesStore } from '@/stores'
+import { Panel } from '@/components/ui/panel'
+import { FileTab } from './file-tab'
+import { ActionsBar } from './actions-bar'
+import { SettingsPanel } from './settings-panel'
 
 export function HeaderBar() {
-  const config = store.useSnapshot(s => s.config)
-  const fileTree = store.useSnapshot(s => s.fileTree)
-  const activeFile = store.useSnapshot(s => s.activeFile)
-
-  const sharableCp = useClipboard()
-  const shortenCp = useClipboard()
-  const { data } = useSWR(repoApi, fetcher)
-
-  console.log('HeaderBar activeFile', activeFile)
+  const { fileTree, activeFile } = filesStore.useSnapshot()
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   return (
-    <div className="h-4vh w-full min-h-36px flex justify-between border-0 border-b border-solid border-gray/24">
-      <div className="flex items-center">
-        {Object.entries(fileTree).map(([filename]) => {
-          const isActive = filename === activeFile
-
-          return (
-            <div
+    <>
+      <header className="h-[48px] w-full flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg-base)]">
+        {/* File tabs */}
+        <div className="flex items-center h-full overflow-x-auto">
+          {Object.keys(fileTree).map(filename => (
+            <FileTab
               key={filename}
-              onKeyDown={() => {
-                console.log('onKeyDown filename', filename)
-                console.log('onKeyDown activeFile', store.mutate.activeFile)
-                store.mutate.activeFile = filename
-                console.log('onKeyDown activeFile', store.mutate.activeFile)
-              }}
+              filename={filename}
+              isActive={filename === activeFile}
               onClick={() => {
-                console.log('onClick filename', filename)
-                console.log('onClick activeFile', store.mutate.activeFile)
-                store.mutate.activeFile = filename
-                console.log('onClick activeFile', store.mutate.activeFile)
+                filesStore.mutate.activeFile = filename
               }}
-              className={cn(
-                'cursor-pointer h-full hover:bg-zinc-6/40 hover:dark:bg-zinc-6/72 flex items-center px-4',
-                isActive
-                  ? ' dark:bg-zinc-6/80 bg-zinc-6/32 border-0 border-y-2 border-solid border-b-gray border-t-transparent'
-                  : 'dark:bg-zinc-6/92 bg-zinc-6/20',
-              )}
-            >
-              {filename}
-            </div>
-          )
-        })}
-      </div>
-      <div className="flex items-center gap-4 mr-2">
-        <div className="flex gap-2 items-center">
-          <input
-            id="use-water-css"
-            type="checkbox"
-            checked={config.waterCSS}
-            onChange={event => {
-              store.mutate.config.waterCSS = event.target.checked
-            }}
-          />
-          <label htmlFor="use-water-css">use Water CSS</label>
+            />
+          ))}
         </div>
-        <div
-          className="flex gap-2 items-center"
-          title="update Import Map automatically"
-        >
-          <input
-            id="use-auto-import-map"
-            type="checkbox"
-            checked={config.autoImportMap}
-            onChange={event => {
-              store.mutate.config.autoImportMap = event.target.checked
-            }}
-          />
-          <label htmlFor="use-auto-import-map">auto Import Map</label>
-        </div>
-        <button type="button" onClick={() => sharableCp.copy(location.href)}>
-          {sharableCp.copied ? 'Copied' : 'Copy Sharable URL'}
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            shortenCp.copy(
-              `https://shorten.viki.moe?url=${encodeURIComponent(location.href)}`,
-            )
-          }
-        >
-          {shortenCp.copied ? 'Copied' : 'Copy Shorten URL'}
-        </button>
-        <a href="https://github.com/vikiboss/react-online">
-          Star on GitHub ({Number(data?.repo?.stars ?? '').toLocaleString()}+)
-        </a>
-      </div>
-    </div>
+
+        {/* Actions */}
+        <ActionsBar onSettingsClick={() => setIsSettingsOpen(true)} />
+      </header>
+
+      {/* Settings panel */}
+      <Panel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
+        <SettingsPanel onClose={() => setIsSettingsOpen(false)} />
+      </Panel>
+    </>
   )
 }

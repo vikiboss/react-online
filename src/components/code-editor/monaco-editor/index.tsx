@@ -1,12 +1,11 @@
-import getWasm from 'shiki/wasm'
 import toast from 'react-hot-toast'
-import { Editor, loader } from '@monaco-editor/react'
+import { debounce } from '@/utils/debounce'
 import { setupAta } from './automatic-type-acquisition'
 import { shikiToMonaco } from '@shikijs/monaco'
+import { Editor, loader } from '@monaco-editor/react'
 import { monacoEditorConfig } from './monaco-editor-config'
 import { createHighlighterCore } from 'shiki/core'
-import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
-import { debounce } from '@/utils/debounce'
+import { createJavaScriptRegexEngine } from 'shiki'
 
 import type { editor } from 'monaco-editor'
 import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
@@ -38,6 +37,22 @@ export function MonacoEditor(props: MonacoEditorProps) {
     // defaultPath: 'index.tsx',
     // defaultValue: 'console.log("hello world!")',
     async onMount(editor: MonacoEditor, monaco: Monaco) {
+      createHighlighterCore({
+        themes: [import('shiki/themes/one-dark-pro.mjs'), import('shiki/themes/one-light.mjs')],
+        langs: [
+          import('shiki/langs/javascript.mjs'),
+          import('shiki/langs/typescript.mjs'),
+          import('shiki/langs/tsx.mjs'),
+          import('shiki/langs/jsx.mjs'),
+          import('shiki/langs/json.mjs'),
+          import('shiki/langs/jsonc.mjs'),
+          import('shiki/langs/html.mjs'),
+          import('shiki/langs/css.mjs'),
+        ],
+        langAlias: { typescript: 'tsx', javascript: 'jsx', json: 'jsonc' },
+        engine: createJavaScriptRegexEngine(),
+      }).then(highlighter => shikiToMonaco(highlighter, monaco))
+
       const fetchType = setupAta((code, path) => {
         monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
       }, onAtaDone)
@@ -89,24 +104,6 @@ export function MonacoEditor(props: MonacoEditorProps) {
       //   langs: ['typescript', 'tsx', 'javascript', 'jsx', 'html', 'css', 'json', ...langs],
       //   langAlias: { typescript: 'tsx' },
       // })
-
-      createHighlighterCore({
-        themes: [import('shiki/themes/one-dark-pro.mjs'), import('shiki/themes/one-light.mjs')],
-        langs: [
-          import('shiki/langs/javascript.mjs'),
-          import('shiki/langs/typescript.mjs'),
-          import('shiki/langs/tsx.mjs'),
-          import('shiki/langs/jsx.mjs'),
-          import('shiki/langs/json.mjs'),
-          import('shiki/langs/html.mjs'),
-          import('shiki/langs/css.mjs'),
-        ],
-        langAlias: { typescript: 'tsx', javascript: 'jsx', jsonc: 'json' },
-        loadWasm: getWasm,
-        engine: createJavaScriptRegexEngine(),
-      }).then(highlighter => {
-        shikiToMonaco(highlighter, monaco)
-      })
 
       editor.updateOptions({ ...monacoEditorConfig, ...editorInitialConfig })
 

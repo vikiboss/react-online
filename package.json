@@ -2,7 +2,7 @@
   "name": "react-online",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.18.2",
+  "packageManager": "pnpm@10.20.0",
   "description": "a simple React online playground",
   "prettier": {
     "semi": false,
@@ -23,7 +23,7 @@
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@shikijs/monaco": "^2.5.0",
-    "@shined/react-use": "^1.12.0",
+    "@shined/react-use": "^1.13.0",
     "@shined/reactive": "^0.3.4",
     "@typescript/ata": "^0.9.8",
     "@unocss/reset": "^65.5.0",
@@ -33,18 +33,19 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
+    "react-resizable-panels": "^3.0.6",
     "shiki": "^2.5.0",
     "sucrase": "^3.35.0",
     "swr": "^2.3.6"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react-swc": "^3.11.0",
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.19",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "unocss": "^65.5.0",
-    "vite": "^6.3.6"
+    "vite": "^6.4.1"
   }
 }

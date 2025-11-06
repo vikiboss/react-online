@@ -1,17 +1,5 @@
-const iniList = [
-  '.editorconfig',
-  '.gitattributes',
-  '.gitmodules',
-  '.yarnrc',
-  '.npmrc',
-]
-const jsonList = [
-  '.prettierrc',
-  '.eslintrc',
-  '.babelrc',
-  '.stylelintrc',
-  'import map',
-]
+const iniList = ['.editorconfig', '.gitattributes', '.gitmodules', '.yarnrc', '.npmrc']
+const jsonList = ['.prettierrc', '.eslintrc', '.babelrc', '.stylelintrc', 'import map', 'Import Map']
 
 const shellList = [
   '.zshrc',

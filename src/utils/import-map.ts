@@ -4,8 +4,7 @@ export interface ImportMapObject {
 }
 
 export function parseImportMapFromCode(code = '', baseURL = 'https://esm.sh') {
-  const importRegex =
-    /import\s+(?:type\s+)?(?:\{[^}]*\}|[^'"]*)\s+from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g
+  const importRegex = /import\s+(?:type\s+)?(?:\{[^}]*\}|[^'"]*)\s+from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"]/g
 
   const importSet = new Set<string>()
   let match: RegExpExecArray | null = importRegex.exec(code)
@@ -49,10 +48,7 @@ export function mergeImportMap(...maps: ImportMapObject[]): ImportMapObject {
  * Add new imports to existing import map without overwriting existing entries
  * This preserves user's custom package versions (e.g., react@canary)
  */
-export function addNewImportsOnly(
-  existingMap: ImportMapObject,
-  newImports: ImportMapObject
-): ImportMapObject {
+export function addNewImportsOnly(existingMap: ImportMapObject, newImports: ImportMapObject): ImportMapObject {
   const result: ImportMapObject = {
     imports: { ...existingMap.imports },
     scopes: { ...existingMap.scopes },

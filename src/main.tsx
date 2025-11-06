@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 
 import '@unocss/reset/tailwind.css'
 import 'virtual:uno.css'
+import './styles/tokens.css'
 
 import { App } from './app.tsx'
 
