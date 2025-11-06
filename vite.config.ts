@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig(() => {
   return {
-    plugins: [UnoCSS(), react({})],
+    plugins: [UnoCSS(), react()],
     resolve: {
       alias: {
         '@': '/src',

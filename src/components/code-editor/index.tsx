@@ -1,18 +1,34 @@
 import { cn } from '@/utils/class-names'
 import { MonacoEditor } from './monaco-editor'
-import { DEFAULT_IMPORT_MAP, EntryFilename, store } from '@/store'
+import {
+  DEFAULT_IMPORT_MAP,
+  EntryFilename,
+  ImportMapName,
+  store,
+} from '@/store'
 import { useEffect, useRef } from 'react'
-import { useDebouncedFn, useMediaQuery, useMount, useStableFn, useUrlSearchParams } from '@shined/react-use'
+import {
+  useDebouncedFn,
+  useMediaQuery,
+  useMount,
+  useStableFn,
+  useUrlSearchParams,
+} from '@shined/react-use'
 import { compress, decompress } from '@/utils/url-compression'
-import { mergeImportMap, parseImportMapFromCode } from '@/utils/import-map'
+import {
+  addNewImportsOnly,
+  mergeImportMap,
+  parseImportMapFromCode,
+} from '@/utils/import-map'
 import getLanguageByFileName from '@/utils/lang'
 
 export function CodeEditor() {
-  const [activeFile, isEditorReady, fileTree] = store.useSnapshot((s) => [
-    s.activeFile,
-    s.isEditorReady,
-    s.fileTree,
-  ])
+  const config = store.useSnapshot(s => s.config)
+  const fileTree = store.useSnapshot(s => s.fileTree)
+  const activeFile = store.useSnapshot(s => s.activeFile)
+  const isEditorReady = store.useSnapshot(s => s.isEditorReady)
+
+  console.log('CodeEditor activeFile', activeFile)
 
   const ref = useRef<MonacoEditor | null>(null)
   const [_, setSp] = useUrlSearchParams('hash-params')
@@ -20,12 +36,17 @@ export function CodeEditor() {
 
   useMount(() => {
     store.mutate.isEditorReady = false
-    const initialCode = new URLSearchParams(location.hash.replace('#', '')).get('code')
+    const initialCode = new URLSearchParams(location.hash.replace('#', '')).get(
+      'code',
+    )
 
     if (initialCode) {
       const code = decompress(initialCode)
       store.mutate.fileTree[EntryFilename] = code
-      const importMap = mergeImportMap(JSON.parse(DEFAULT_IMPORT_MAP), parseImportMapFromCode(code))
+      const importMap = mergeImportMap(
+        JSON.parse(DEFAULT_IMPORT_MAP),
+        parseImportMapFromCode(code),
+      )
       store.mutate.importMap = JSON.stringify(importMap, null, 2)
     }
   })
@@ -45,15 +66,53 @@ export function CodeEditor() {
     (e = '') => {
       store.mutate.fileTree[activeFile] = e
 
-      if (activeFile === 'index.tsx') {
-        const importMap = mergeImportMap(JSON.parse(DEFAULT_IMPORT_MAP), parseImportMapFromCode(store.mutate.fileTree[EntryFilename]))
-        store.mutate.importMap = JSON.stringify(importMap, null, 2)
+      if (activeFile === EntryFilename) {
         setSp({ code: e ? compress(e) : undefined })
+
+        // Auto update Import Map if autoImportMap is enabled
+        if (config.autoImportMap) {
+          try {
+            // Get current Import Map (may have been manually edited by user)
+            const currentImportMap = JSON.parse(
+              store.mutate.fileTree[ImportMapName] || DEFAULT_IMPORT_MAP,
+            )
+
+            // Parse new imports from code
+            const newImportsFromCode = parseImportMapFromCode(
+              store.mutate.fileTree[EntryFilename],
+            )
+
+            // Incrementally add new imports without overwriting existing ones
+            // This preserves user's custom versions (e.g., react@canary)
+            const updatedMap = addNewImportsOnly(
+              currentImportMap,
+              newImportsFromCode,
+            )
+
+            const importMapStr = JSON.stringify(updatedMap, null, 2)
+            store.mutate.importMap = importMapStr
+            // Sync to Import Map file for viewing
+            store.mutate.fileTree[ImportMapName] = importMapStr
+          } catch (error) {
+            console.error('Failed to update Import Map:', error)
+          }
+        }
+      }
+
+      if (activeFile === ImportMapName) {
+        try {
+          // Validate JSON before updating
+          JSON.parse(e)
+          // Update importMap for preview (both auto and manual mode use this)
+          store.mutate.importMap = e
+        } catch (error) {
+          // Keep the old import map if JSON is invalid
+          console.warn('Invalid Import Map JSON:', error)
+        }
       }
     },
-    { wait: 300 },
+    { wait: 1200 },
   )
-
 
   return (
     <div className="flex flex-1">
@@ -65,19 +124,27 @@ export function CodeEditor() {
             isEditorReady ? 'z-[-1] opacity-0' : 'z-[99999]',
           )}
         >
-          <span className={cn('p-4 rounded-2', isDark ? 'bg-zinc-8 text-white' : 'bg-white text-dark')}>
+          <span
+            className={cn(
+              'p-4 rounded-2',
+              isDark ? 'bg-zinc-8 text-white' : 'bg-white text-dark',
+            )}
+          >
             Setting up Monaco Editor...
           </span>
         </div>
 
         <MonacoEditor
-          className={cn('w-full h-full', isEditorReady ? 'opacity-100' : 'opacity-0')}
+          className={cn(
+            'w-full h-full',
+            isEditorReady ? 'opacity-100' : 'opacity-0',
+          )}
           path={activeFile}
           language={getLanguageByFileName(activeFile)}
           value={fileTree[activeFile]}
           onChange={debouncedHandleChange}
-          onAtaDone={() => { }}
-          onMount={(e) => {
+          onAtaDone={() => {}}
+          onMount={e => {
             ref.current = e
             store.mutate.isEditorReady = true
             updateTheme()

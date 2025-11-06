@@ -44,3 +44,35 @@ export function mergeImportMap(...maps: ImportMapObject[]): ImportMapObject {
 
   return importMap
 }
+
+/**
+ * Add new imports to existing import map without overwriting existing entries
+ * This preserves user's custom package versions (e.g., react@canary)
+ */
+export function addNewImportsOnly(
+  existingMap: ImportMapObject,
+  newImports: ImportMapObject
+): ImportMapObject {
+  const result: ImportMapObject = {
+    imports: { ...existingMap.imports },
+    scopes: { ...existingMap.scopes },
+  }
+
+  // Only add imports that don't already exist
+  for (const [key, value] of Object.entries(newImports.imports || {})) {
+    if (!result.imports?.[key]) {
+      result.imports = result.imports || {}
+      result.imports[key] = value
+    }
+  }
+
+  // Only add scopes that don't already exist
+  for (const [key, value] of Object.entries(newImports.scopes || {})) {
+    if (!result.scopes?.[key]) {
+      result.scopes = result.scopes || {}
+      result.scopes[key] = value
+    }
+  }
+
+  return result
+}

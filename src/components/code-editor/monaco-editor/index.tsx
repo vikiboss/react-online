@@ -6,6 +6,7 @@ import { shikiToMonaco } from '@shikijs/monaco'
 import { monacoEditorConfig } from './monaco-editor-config'
 import { createHighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
+import { debounce } from '@/utils/debounce'
 
 import type { editor } from 'monaco-editor'
 import type * as monacoApi from 'monaco-editor/esm/vs/editor/editor.api'
@@ -28,15 +29,7 @@ loader.config({
 })
 
 export function MonacoEditor(props: MonacoEditorProps) {
-  const {
-    onMount,
-    theme,
-    themes = [],
-    langs = [],
-    editorInitialConfig,
-    onAtaDone = () => {},
-    ...rest
-  } = props
+  const { onMount, theme, themes = [], langs = [], editorInitialConfig, onAtaDone = () => {}, ...rest } = props
 
   const defaultProps = {
     width: '100%',
@@ -49,6 +42,9 @@ export function MonacoEditor(props: MonacoEditorProps) {
         monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
       }, onAtaDone)
 
+      // Debounced version to avoid too frequent type fetching while typing
+      const debouncedFetchType = debounce(fetchType, 1200)
+
       // disable TS semantic and syntax validation
       monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
         noSemanticValidation: false,
@@ -58,7 +54,7 @@ export function MonacoEditor(props: MonacoEditorProps) {
       // disable CSS validation
       monaco.languages.css.cssDefaults.setOptions({ validate: false })
 
-      editor.onDidChangeModelContent(() => fetchType(editor.getValue()))
+      editor.onDidChangeModelContent(() => debouncedFetchType(editor.getValue()))
 
       monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
         target: monaco.languages.typescript.ScriptTarget.Latest,

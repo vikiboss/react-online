@@ -6,7 +6,10 @@ export function PreviewZone() {
   const [codeMap, importMap] = store.useSnapshot(s => [s.fileTree, s.importMap])
 
   const config = store.useSnapshot(s => s.config)
-  const finalIM = config.autoImportMap ? importMap : codeMap[ImportMapName]
+  // Always use importMap as it's kept in sync with fileTree[ImportMapName]
+  // In auto mode: updated by code changes and manual Import Map edits
+  // In manual mode: updated by manual Import Map edits only
+  const finalIM = importMap
 
   const url = useMemo(() => {
     let finalHtml = ''
@@ -27,13 +30,13 @@ export function PreviewZone() {
           sourceMapOptions: {
             compiledFilename: 'index.min.js',
           },
-        }
+        },
       )
 
       finalHtml = codeMap['index.html']
         .replace(
           '<script type="importmap"></script>',
-          `<script type="importmap">${finalIM}</script>`
+          `<script type="importmap">${finalIM}</script>`,
         )
         .replace('/** SCRIPT_PLACEHOLDER */', output.code)
         .replace('/* STYLE_PLACEHOLDER */', codeMap['style.css'] || '')
@@ -41,7 +44,7 @@ export function PreviewZone() {
       if (config.waterCSS) {
         finalHtml = finalHtml.replace(
           '<!-- LINK_PLACEHOLDER -->',
-          '<!-- LINK_PLACEHOLDER -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />'
+          '<!-- LINK_PLACEHOLDER -->\n    <link rel="stylesheet" href="https://esm.sh/water.css@2.1.1/out/water.css" />',
         )
       }
     } catch (e) {
@@ -58,7 +61,7 @@ export function PreviewZone() {
         \`
 
         document.getElementById('root').innerHTML = content
-`
+`,
       )
     }
 
@@ -67,13 +70,13 @@ export function PreviewZone() {
 
   return (
     <iframe
-      className='flex-1 border-0'
+      className="flex-1 border-0"
       src={url}
-      title='React Online Preview'
-      width='100%'
+      title="React Online Preview"
+      width="100%"
       allowFullScreen
-      sandbox='allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads allow-presentation allow-pointer-lock allow-top-navigation allow-storage-access-by-user-activation allow-orientation-lock'
-      referrerPolicy='unsafe-url'
+      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads allow-presentation allow-pointer-lock allow-top-navigation allow-storage-access-by-user-activation allow-orientation-lock"
+      referrerPolicy="unsafe-url"
     />
   )
 }

@@ -21,7 +21,7 @@ export const DEFAULT_IMPORT_MAP: string = JSON.stringify(
     scopes: {},
   },
   null,
-  2
+  2,
 )
 
 export const store = create({
@@ -34,6 +34,7 @@ export const store = create({
     [TemplateFilename]: html,
     [EntryFilename]: tsx,
     [StyleFilename]: style,
+    [ImportMapName]: DEFAULT_IMPORT_MAP,
   } as Record<string, string>,
   activeFile: EntryFilename,
   importMap: DEFAULT_IMPORT_MAP,

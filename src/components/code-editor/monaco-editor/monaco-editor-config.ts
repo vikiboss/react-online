@@ -1,6 +1,7 @@
 import type { editor } from 'monaco-editor'
 
-export const monacoEditorConfig: editor.IEditorOptions & editor.IGlobalEditorOptions = {
+export const monacoEditorConfig: editor.IEditorOptions &
+  editor.IGlobalEditorOptions = {
   inlayHints: {
     enabled: 'on',
   },

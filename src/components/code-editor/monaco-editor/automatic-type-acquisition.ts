@@ -3,7 +3,7 @@ import { setupTypeAcquisition } from '@typescript/ata'
 
 export function setupAta(
   onDownloadFile?: (code: string, path: string) => void,
-  onFinished?: (files: Map<string, string>) => void
+  onFinished?: (files: Map<string, string>) => void,
 ) {
   return setupTypeAcquisition({
     typescript,

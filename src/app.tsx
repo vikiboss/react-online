@@ -4,9 +4,9 @@ import { PreviewZone } from './components/preview-zone'
 
 export function App() {
   return (
-    <div className='size-screen flex flex-col font-sans'>
+    <div className="size-screen flex flex-col font-sans">
       <HeaderBar />
-      <div className='flex h-full border-0 border-r border-solid border-gray/32'>
+      <div className="flex h-full border-0 border-r border-solid border-gray/32">
         <CodeEditor />
         <PreviewZone />
       </div>
