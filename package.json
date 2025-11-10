@@ -2,7 +2,7 @@
   "name": "react-online",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.21.0",
   "description": "a simple React online playground",
   "prettier": {
     "semi": false,
