@@ -32,7 +32,13 @@ export function CodeEditor() {
         detectIndentation: false,
       })
     }
-  }, [config.editor.fontSize, config.editor.lineNumbers, config.editor.minimap, config.editor.tabSize, config.editor.wordWrap])
+  }, [
+    config.editor.fontSize,
+    config.editor.lineNumbers,
+    config.editor.minimap,
+    config.editor.tabSize,
+    config.editor.wordWrap,
+  ])
 
   useMount(() => {
     editorStore.mutate.isEditorReady = false
@@ -58,10 +64,10 @@ export function CodeEditor() {
   useEffect(() => void updateTheme(), [isDark, config.theme])
 
   const debouncedHandleChange = useDebouncedFn(
-    (e = '') => {
-      filesStore.mutate.fileTree[activeFile] = e
+    (e = '', fileName = activeFile) => {
+      filesStore.mutate.fileTree[fileName] = e
 
-      if (activeFile === EntryFilename) {
+      if (fileName === EntryFilename) {
         setSp({ code: e ? compress(e) : undefined })
 
         // Auto update Import Map if autoImportMap is enabled
@@ -87,7 +93,7 @@ export function CodeEditor() {
         }
       }
 
-      if (activeFile === ImportMapName) {
+      if (fileName === ImportMapName) {
         try {
           // Validate JSON before updating
           JSON.parse(e)
@@ -121,7 +127,7 @@ export function CodeEditor() {
         path={activeFile}
         language={getLanguageByFileName(activeFile)}
         value={fileTree[activeFile]}
-        onChange={debouncedHandleChange}
+        onChange={(e = '') => debouncedHandleChange(e, activeFile)}
         onAtaDone={() => {}}
         editorInitialConfig={{
           fontSize: config.editor.fontSize,
